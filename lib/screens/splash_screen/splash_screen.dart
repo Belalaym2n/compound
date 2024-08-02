@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code/screens/Home_page/home_page.dart';
 import 'package:qr_code/screens/admin_panel/add_users.dart';
 import 'package:qr_code/screens/login/autoLogin.dart';
 import 'package:qr_code/screens/login/login_screen.dart';
@@ -40,7 +41,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       Future.delayed(Duration(seconds: 3), () {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => AutoLogin()),
+            MaterialPageRoute(builder: (context) => LoginScreen()),
               (route) => false,
         );
       });

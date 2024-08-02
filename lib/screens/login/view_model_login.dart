@@ -28,7 +28,7 @@ class ViewModelLogin extends ChangeNotifier {
 
       try {
         if (password == snap.docs[0]['password']) {
-          getUserId(key: 'address', value: snap.docs[0]['address']);
+          setUserId(key: 'address', value: snap.docs[0]['address']);
           // await SharedPref().setUserAddres(snap.docs[0]['address']);
           if (snap.docs[0]['is admin'] == true) {
             loginConnector.naviget(context);
@@ -41,7 +41,7 @@ class ViewModelLogin extends ChangeNotifier {
           } else {
             print("user");
             loginConnector.navigateUser(context);
-            getUserId(value: id, key: 'Id');
+            setUserId(value: id, key: 'Id');
           }
         }
       } catch (e) {
@@ -50,7 +50,7 @@ class ViewModelLogin extends ChangeNotifier {
     }
   }
 
-  getUserId({required String value, required String key}) async {
+  setUserId({required String value, required String key}) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.setString(key, value);
   }

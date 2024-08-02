@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/screens/admin_panel/add_users.dart';
 import 'package:qr_code/screens/admin_panel/widget.dart';
+import 'package:qr_code/screens/chat/chat_screen.dart';
 
 import '../../utils/routes.dart';
 
@@ -31,7 +32,8 @@ class AdminServices extends StatelessWidget {
             screenHeight: screenHeight,
             text: 'Add User',
             screenWidth: screenWidth
-          )
+          ),
+
         ],
       ),
       

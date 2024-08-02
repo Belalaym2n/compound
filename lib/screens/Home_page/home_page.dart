@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/Home_page/viewModeLHome.dart';
+import 'package:qr_code/screens/chat/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
 import '../../utils/routes.dart';
+import '../../utils/widgets.dart';
 import '../admin_panel/widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,7 +68,20 @@ class _HomePageState extends State<HomePage> {
                   },
                   screenHeight: screenHeight,
                   text: 'Generate QR Code',
-                  screenWidth: screenWidth)
+                  screenWidth: screenWidth),
+              itemWidger(
+                  functionNavigate: () {
+                    Navigator.of(context).push((
+                        MaterialPageRoute(builder: (context) => ChatScreen(
+                            id: name.toString(),
+                            senderId: name.toString(),
+                        ),
+                        )
+                    ));
+                  },
+                  screenHeight: screenHeight,
+                  text: 'Go To Chat With Admin',
+                  screenWidth: screenWidth),
             ],
           ));
   }

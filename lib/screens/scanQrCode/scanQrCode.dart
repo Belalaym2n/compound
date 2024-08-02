@@ -32,10 +32,12 @@ class _QRScanPageState extends State<QRScanPage> {
 
 
     try {
-    QuerySnapshot visitors=await FirebaseFirestore.instance.collection("Visitors").where("dataScanned").get();
+    QuerySnapshot visitors=await FirebaseFirestore.instance
+        .collection("Visitors").where("dataScanned").get();
 
       final result = await BarcodeScanner.scan();
-    bool hasBeenScannedBefore = visitors.docs.any((doc)
+    bool hasBeenScannedBefore = visitors.docs
+        .any((doc)
     => doc['dataScanned'].toString() == result.rawContent.toString());
 
     if(hasBeenScannedBefore){

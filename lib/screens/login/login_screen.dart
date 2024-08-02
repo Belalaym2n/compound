@@ -26,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   var iDController = TextEditingController();
   var passwordController = TextEditingController();
   ViewModelLogin viewModel = ViewModelLogin();
-  bool isLogin=false;
+  bool isLogin = false;
+
   @override
   void initState() {
     viewModel.loginConnector = this;
@@ -154,15 +155,15 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
                               viewModel.checkUserExist(
                                   id: id, password: password, context: context);
                               setState(() {
-                                isLogin=true;
+                                isLogin = true;
                               });
-                              isLogin=true;
+                              isLogin = true;
                             },
-                            child:isLogin?
+                            child: isLogin ?
 
                             CircularProgressIndicator(
                               color: Colors.white,
-                            ):
+                            ) :
                             Text(
                               "Login",
                               style: TextStyle(
@@ -192,11 +193,11 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
 
   @override
   errorMessage(String error, BuildContext context) {
-
-    return showDialog(context: context, builder: (context) => AlertDialog(
-      content:Text(error),
-      title: Text('error'),
-    ),);
+    return showDialog(context: context, builder: (context) =>
+        AlertDialog(
+          content: Text(error),
+          title: Text('error'),
+        ),);
   }
 
   @override
@@ -218,6 +219,8 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   @override
   navigateSecuirty(BuildContext context) {
     // TODO: implement navigateSecuirty
-   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => QRScanPage(),), (route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => QRScanPage(),), (
+        route) => false);
   }
 }
