@@ -6,6 +6,11 @@ class GetAllUserViewModel extends ChangeNotifier{
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessage(
       ) {
     return FirebaseFirestore.instance
-    .collection('Conversations').snapshots();
+    .collection('Conversations').
+
+  orderBy('DataTime' ,descending: true).
+        snapshots();
   }
+
+
 }

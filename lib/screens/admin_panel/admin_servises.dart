@@ -4,6 +4,7 @@ import 'package:qr_code/screens/admin_panel/widget.dart';
 import 'package:qr_code/screens/chat/chat_screen.dart';
 
 import '../../utils/routes.dart';
+import 'getAllUsers/allUsersMessage.dart';
 
 class AdminServices extends StatelessWidget {
   double screenHeight = 0;
@@ -26,13 +27,27 @@ class AdminServices extends StatelessWidget {
             fontSize: 23
           ),),
           itemWidger(
+
             functionNavigate: (){
+
               Navigator.of(context).pushNamed(AppRoutes.addUser);
             },
             screenHeight: screenHeight,
             text: 'Add User',
             screenWidth: screenWidth
           ),
+          itemWidger(
+
+              functionNavigate: (){
+
+                Navigator.of(context).push(MaterialPageRoute(builder:
+                    (context) => AllUsersSentMessage(),));
+              },
+              screenHeight: screenHeight,
+              text: 'Chat with owners',
+              screenWidth: screenWidth
+          ),
+
 
         ],
       ),

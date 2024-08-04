@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code/screens/admin_panel/getAllUsers/getAllUsersViewModel.dart';
 import 'package:qr_code/screens/chat/chat_screen.dart';
 
@@ -32,6 +34,8 @@ class _AllUsersSentMessageState extends State<AllUsersSentMessage> {
         .width;
     return Scaffold(
       appBar:AppBar(
+        leading: Icon(Icons.arrow_forward_sharp,color: Colors.white,
+        size: 0,),
         centerTitle: true,
         toolbarHeight: screenHeight * 0.09,
        flexibleSpace: Center(
@@ -43,58 +47,62 @@ class _AllUsersSentMessageState extends State<AllUsersSentMessage> {
         children: [
 
           Expanded(
-            child: Container(
-              height: screenHeight * 0.4,
-              width: screenWidth,
-              child: Column(
-                children: [
 
 
-                  Expanded(
-                      child: StreamBuilder<QuerySnapshot>(
-                          stream: viewModel.getMessage(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (snapshot.hasError) {
-                              return Center(
-                                  child: Text('Error: ${snapshot.error}'));
-                            }
-                            if (!snapshot.hasData) {
-                              return Center(child: Text('No messages yet.'));
-                            }
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: viewModel.getMessage(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Error: ${snapshot.error}',style: TextStyle(),));
+                    }
+                    if (!snapshot.hasData) {
+                      return Center(child: Text('No messages yet.'));
+                    }
 
-                            final messages = snapshot.data!.docs
-                                .map((doc) => doc['name'])
-                                .toList();
+                    final name = snapshot.data!.docs
+                        .map((doc) => doc['name'])
+                        .toList();
+                    final lastMessage=
+                    snapshot.data!.docs.map((e) =>
+                    e['lastMessage']).toList();
 
-                            return ListView.builder(
-                              itemCount: messages.length,
-                              itemBuilder: (context, index) {
-                                return UsersMessages(
-                                    screenWidth: screenWidth,
-                                    screenHeight: screenHeight,
-                                    userid: messages[index].toString(),
-                                    function: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ChatScreen(
-                                                  id: messages[index],
-                                                  senderId: 'admin',
-                                                ),
-                                          ));
-                                    });
-                              },
-                            );
-                          }))
-                ],
-              ),
-            ),
-          ),
+                    final dateTimeNow=
+                    snapshot.data!.docs.map((e) =>
+                    e['DataTime']).toList();
+
+
+                    return
+                      ListView.builder(
+                      reverse: false,
+
+                      itemCount: name.length,
+                      itemBuilder: (context, index) {
+                        return
+                          Expanded(child:
+                          UsersMessages(
+                          lastMessage: lastMessage[index].toString(),
+                            screenWidth: screenWidth,
+                            screenHeight: screenHeight,
+                            userid: name[index].toString(),
+                            function: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatScreen(
+                                          id: name[index],
+                                          senderId: 'admin',
+                                        ),
+                                  ));
+                            }));
+                      },
+                    );
+                  })),
         ],
       ),
     );
@@ -102,7 +110,10 @@ class _AllUsersSentMessageState extends State<AllUsersSentMessage> {
 
   UsersMessages({required double screenWidth,
     required Function function,
-    required double screenHeight, required String userid}) {
+    required double screenHeight,
+    required String userid,
+    required String lastMessage,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
          horizontal: 18,
@@ -149,31 +160,38 @@ SizedBox(
               SizedBox(
                 width: screenWidth * 0.02,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.02,
-                  ),
-                  Text(
-                    "$userid",
-                    style: TextStyle(
-                        color: Color(0xFF000000),
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  Text(
-                    "last message",
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: screenWidth * 0.03,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.02,
+                    ),
+
+                    Text(
+                      userid.length>10?
+                      "${userid.substring(0, 10)}":'$userid',
+                      style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.w800),
+  maxLines: 1,
+                    ),
+                    Text(
+                      lastMessage.length>10?
+                      "${lastMessage.substring(0, 10)}":'$lastMessage',
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: screenWidth * 0.03,
+                          fontWeight: FontWeight.w600
+
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                width: screenWidth * 0.3,
-              ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -182,7 +200,7 @@ SizedBox(
                   ),
                   Center(
                     child: Text(
-                      "12:00 PM",
+                      "12:00 PM   ",
                       style: TextStyle(
                           color: Color(0xFF000000),
                           fontSize: screenWidth * 0.03,
@@ -191,7 +209,8 @@ SizedBox(
                   ),
 
                 ],
-              )
+              ),
+
             ],
           ),
         ),
@@ -239,7 +258,7 @@ SizedBox(
                           border: InputBorder.none,
                           hintText: "Search For User",
 
-                          hintTextDirection: TextDirection.ltr,
+                        //  hintTextDirection: TextDirection.ltr,
                           hintStyle: TextStyle(
 
                             color: Colors.black,

@@ -8,6 +8,7 @@ import 'package:qr_code/utils/shared_pref.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  //FirebaseFirestore.instance.disableNetwork();
   SharedPref()..shared();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -17,6 +18,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.

@@ -38,7 +38,8 @@ class _QRScanPageState extends State<QRScanPage> {
       final result = await BarcodeScanner.scan();
     bool hasBeenScannedBefore = visitors.docs
         .any((doc)
-    => doc['dataScanned'].toString() == result.rawContent.toString());
+    => doc['dataScanned']
+        .toString() == result.rawContent.toString());
 
     if(hasBeenScannedBefore){
       return  _showError('QR code has been scanned before');

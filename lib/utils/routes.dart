@@ -12,9 +12,9 @@ import '../screens/splash_screen/splash_screen.dart';
 
 class AppRoutes {
   static const String addUser = 'add';
-  static const String adminService = 'admin';
+  static const String adminService = '/';
   static const String generateQr = 'generatt';
-  static const String allUserSent = '/';
+  static const String allUserSent = '/sfs';
   static const String splash = 'sdf/';
   static const String autoLogin = 'auto';
   static const String scanQrCode = '/scan';

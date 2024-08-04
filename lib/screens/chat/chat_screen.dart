@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/models/messageModel.dart';
 import 'package:qr_code/screens/chat/viewModel_shat.dart';
@@ -46,6 +47,9 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+         scrolledUnderElevation: 0,
         leading: Icon(
           Icons.arrow_back_ios,
           color: Colors.white,
@@ -78,40 +82,85 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   final messages = snapshot.data!.docs;
 
-                  return ListView.builder(
+                  return Expanded(
+                    child: ListView.builder(
 
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final messageData =
-                          messages[index].data() as Map<String, dynamic>;
-                      return
-                        ListTile(
-                        title: widget.senderId == messageData['senderId']
-                            ?
-                        Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.
-                                    circular(12)),
-                                child: Text(
-                                  messageData['message'],
-                                  style: TextStyle(color:
-                                  Colors.black),
-                                ),
-                              )
-                            : Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Text(
-                                  messageData['message'],
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
+                      reverse: true,
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
 
-                        subtitle: Text('Sent by: ${messageData['senderId']}'),
-                      );
-                    },
+                        final messageData =
+                            messages[index].data()
+                            as Map<String, dynamic>;
+                        String timestamp=messageData['timestamp'];
+                        DateTime dateTime=DateTime.parse(timestamp);
+                        String formattedTime = DateFormat.Hm().
+                        format(dateTime);
+                        return Row(
+                          mainAxisAlignment: widget.senderId==
+                              messageData['senderId']?
+                          MainAxisAlignment.end:MainAxisAlignment.start,
+                                    children: [
+
+
+                                      Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Row(
+                                            children: [
+
+                                              ConstrainedBox(
+                                                  constraints: BoxConstraints(
+                                                    maxWidth: screenWidth * 0.8,
+                                                  ),
+
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color:widget.senderId==
+                                                            messageData['senderId']?Color(0xFFF1F1F1):
+                                                        Colors.blue,
+                                                        borderRadius:
+                                                        BorderRadius.circular(10)),
+                                                    child:
+
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          "  ${messageData['message']}  ",
+                                                          style:
+                                                          TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                              fontSize: screenWidth*0.046,
+
+                                                              color:widget.senderId==
+
+                                                              messageData['senderId']?Colors.black:
+                                                          Colors.black),
+                                                        ),
+                                                        Text(
+                                                          "  $formattedTime  ",
+                                                          style:
+                                                          TextStyle(
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: screenWidth*0.03,
+
+                                                              color:widget.senderId==
+
+                                                                  messageData['senderId']?Colors.black:
+                                                              Colors.black),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                  )
+
+                                              ),
+
+                                            ]),
+                                      )
+                                    ]);
+                      },
+                    ),
                   );
                 },
               ),
@@ -128,15 +177,20 @@ class _ChatScreenState extends State<ChatScreen> {
 
   keyBoardMessage() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      height: screenHeight * 0.07,
-      width: screenWidth,
+
+      //eight: screenHeight * 0.07,
+    //  width: screenWidth,
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
+
+        scribbleEnabled: true,
+
+
+              //scrollPhysics: AlwaysScrollableScrollPhysics(),
+              textAlign: TextAlign.center,
+              //autofocus: true,
               controller: controller,
 
               decoration: InputDecoration(
@@ -150,7 +204,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       icon: Icon(Icons.send)),
                   filled: true,
-                  fillColor: Colors.grey,
+
+                  fillColor: Color(0xFFF1F1F1),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(color: Colors.white)),
@@ -164,7 +219,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   hintText: "  Type Your message",
                   hintStyle: TextStyle(
                     color: Colors.black,
-                  )),
+                  )
+              ),
 
               //   maxLines: 1,
               obscureText: false,
