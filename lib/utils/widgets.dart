@@ -54,7 +54,8 @@ Widget customFormField(
                 border: InputBorder.none,
                 hintText: hintText,
               ),
-              maxLines: 1,
+              minLines: 1, // لتحديد الحد الأدنى للارتفاع
+              maxLines: null,
               obscureText: obscureText,
             ),
           ),
@@ -64,7 +65,9 @@ Widget customFormField(
   );
 }
 
-gotToChat({required double screenWidth, required Function function,required double screenHeight, required String userid}) {
+gotToChat({required double screenWidth,
+  required Function function,
+  required double screenHeight, required String userid}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: InkWell(
@@ -97,15 +100,7 @@ SizedBox(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle
                       ),
-                      child: Image.asset(
-                        AppImages.userImage,
-                        height: screenHeight * 0.1,
-
-                        width: screenWidth * 0.17,
-                        fit: BoxFit.fill,
-
-                        //dcolor: Colors.black,
-                      ),
+                      child:Icon(Icons.person, size: screenWidth*0.14,),
                     ),
                   ),
                   SizedBox(
@@ -135,10 +130,7 @@ SizedBox(
                     ],
                   ),
                   Spacer(),
-                  IconButton(onPressed: (){},
-                      icon: Icon(Icons.video_call,color: Colors.grey,)),
-                  IconButton(onPressed: (){}
-                      , icon: Icon(Icons.call,color: Colors.grey,)),
+
                 ],
               ),
             ),

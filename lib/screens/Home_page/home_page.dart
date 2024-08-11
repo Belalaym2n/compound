@@ -60,9 +60,10 @@ class _HomePageState extends State<HomePage> {
 
               Text(
                 'Welcome ${name}',
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 23),
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 26),
               ),
               itemWidger(
+                image: AppRoutes.addUser,
                   functionNavigate: () {
                     Navigator.of(context).pushNamed(AppRoutes.generateQr);
                   },
@@ -70,6 +71,7 @@ class _HomePageState extends State<HomePage> {
                   text: 'Generate QR Code',
                   screenWidth: screenWidth),
               itemWidger(
+                image: AppRoutes.addUser,
                   functionNavigate: () {
                     Navigator.of(context).push((
                         MaterialPageRoute(builder: (context) => ChatScreen(

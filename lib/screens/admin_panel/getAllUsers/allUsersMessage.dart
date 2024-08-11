@@ -8,6 +8,7 @@ import 'package:qr_code/screens/chat/chat_screen.dart';
 
 import '../../../utils/app_images.dart';
 import '../../../utils/widgets.dart';
+import '../../chat/video_call/video_viewModel.dart';
 
 class AllUsersSentMessage extends StatefulWidget {
   const AllUsersSentMessage({super.key});
@@ -191,6 +192,17 @@ SizedBox(
                   ],
                 ),
               ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final callType in CallType.values)
+                SendCallButton(
+                  callType: callType,
+                  userId: userid,
+                  name:userid,
+                  canAcceptCalls: false,
+                ),
+
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,9 +225,9 @@ SizedBox(
 
             ],
           ),
-        ),
+        ]),
       ),
-    );
+    ));
   }
 
 

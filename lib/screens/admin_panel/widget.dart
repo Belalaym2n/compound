@@ -1,42 +1,56 @@
  import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code/utils/app_colors.dart';
+import 'package:qr_code/utils/app_images.dart';
 
 itemWidger({
   required double screenWidth,
   required double screenHeight,
   required Function functionNavigate,
+  required String image,
 
   required String text}){
-  return InkWell(
-    onTap: () {
-      functionNavigate();
-    },
-    child: Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: Material(
-        elevation: 10,
-        borderRadius: BorderRadius.circular(24),
+  return
 
-        child: Container(
-          height: screenHeight*0.05,
-          width: screenWidth,
-          decoration: BoxDecoration(
+    AnimatedOpacity(
+      opacity:  1.0 ,
+
+      duration: Duration(milliseconds: 500),
+  child:Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: Material(
+
+      color: AppColors.primary,
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        onTap: () {
+          functionNavigate();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Material(
             color: AppColors.primary,
-            borderRadius: BorderRadius.circular(25),
-            // border: Border.all(
-            //   //color: AppColors.primary,
-            //   //width: 2
-            // ),
+            child: Row(
+              children: [
+                // Container(
+                //   width: screenWidth*0.4,
+                //   height: screenHeight,
+                //   decoration: BoxDecoration(
+                //       image: DecorationImage(image: AssetImage(image))
+                //   ),
+                // ),
+                Icon(Icons.person,color: Colors.white,size: screenWidth*0.14,
+                    ),
+                Text(text,style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenWidth*0.05
+                ),)
 
-          ),
-          child: Center(child: Text(text,style: TextStyle(
-            color: Colors.white,
-            fontSize: screenWidth*0.05
-
-          ),)),
+              ],
+            ),
+          )
         ),
       ),
     ),
-  );
+  ));
  }

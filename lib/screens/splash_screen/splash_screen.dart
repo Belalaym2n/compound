@@ -2,11 +2,13 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code/screens/Home_page/home_page.dart';
-import 'package:qr_code/screens/admin_panel/add_users.dart';
+import 'package:qr_code/screens/admin_panel/add_user/add_users.dart';
 import 'package:qr_code/screens/login/autoLogin.dart';
 import 'package:qr_code/screens/login/login_screen.dart';
 import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_code/utils/app_images.dart';
+
+import '../onBoard/onBoardPage.dart';
 
 class AnimatedSplashScreen extends StatefulWidget {
   @override
@@ -27,7 +29,8 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _animation = Tween<double>(begin: 0.0, end: 1.0)
+        .animate(_controller);
 
     _controller.forward().then((_) {
       // Delay the start of text animation and show static image
@@ -41,7 +44,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       Future.delayed(Duration(seconds: 3), () {
         Navigator.pushAndRemoveUntil(
           context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
+            MaterialPageRoute(builder: (context) => AutoLogin()),
               (route) => false,
         );
       });
@@ -63,9 +66,9 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 0,
-        backgroundColor: AppColors.primary,
+        backgroundColor:Colors.white,
       ),
-      backgroundColor: AppColors.primary,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
 
         child: Column(
@@ -84,7 +87,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                         child: ScaleTransition(
                           scale: _animation,
                           child: Image.asset(AppImages.logoImage,
-                            height: screenHeight*0.57,fit: BoxFit.cover,),
+                            height: screenHeight*0.57,fit: BoxFit.cover,color: Colors.black,),
                         ),
                       ),
                     ),
@@ -93,7 +96,8 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                     children: [
                       Visibility(
                           visible: _isTextVisible,
-                          child: Image.asset(AppImages.logoImage,height:  screenHeight*0.57,fit: BoxFit.cover,)
+                          child: Image.asset(AppImages.logoImage,height:
+                          screenHeight*0.57,fit: BoxFit.cover,color: Colors.black,)
                       ),
                       // SText Animation
 
@@ -115,8 +119,9 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
 
                                   TyperAnimatedText(   "Welcome To Qr Code App",
                                 textStyle:  const TextStyle(
-                                    color: Colors.white,fontSize: 23,
+                                    color: Colors.black,fontSize: 23,
                                     fontWeight: FontWeight.w900),
+
 
                                                             ),
 

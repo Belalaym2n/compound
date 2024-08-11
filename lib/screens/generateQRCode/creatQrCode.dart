@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/generateQRCode/viewModelQRCodeGenerate.dart';
+import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:screenshot/screenshot.dart';
@@ -70,7 +71,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                       controller: _screenshotController,
                       child: QrImageView(
                         backgroundColor: Colors.white,
-                        data: "${controllerName.text}Id is :$id address is:$address",
+                        data: "${controllerName.text}Id is :$id date time:${DateTime.now()}",
                         size: screenWidth * 0.6,
                       ),
                     ),
@@ -88,10 +89,10 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                             style: ElevatedButton.styleFrom(
                               fixedSize:
                                   Size(screenWidth * 0.6, screenHight / 15),
-                              backgroundColor: Colors.black,
+                              backgroundColor: AppColors.primary,
                               elevation: 10,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
+                                  borderRadius: BorderRadius.circular(18)),
                             ),
                             child: const Text(
                               "Regenerate Qr Code",
@@ -104,7 +105,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                       height: screenHight * 0.04,
                     ),
                     FloatingActionButton(
-                      backgroundColor: Colors.black,
+                      backgroundColor: AppColors.primary,
                       onPressed: () async {
                         // Capture the QR code widget as an image
                         viewModel.shareQrCode(_screenshotController);
@@ -123,10 +124,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text(
-                        address ?? 'sdfa',
-                        style: TextStyle(color: Colors.black),
-                      ),
+
                       SizedBox(
                         height: screenHight * 0.13,
                       ),
@@ -150,10 +148,10 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                               style: ElevatedButton.styleFrom(
                                 fixedSize:
                                     Size(screenWidth * 0.8, screenHight / 15),
-                                backgroundColor: Color(0xff9170e6),
+                                backgroundColor: AppColors.primary,
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
+                                    borderRadius: BorderRadius.circular(18)),
                               ),
                               child: const Text(
                                 "Create Qr Code",
@@ -194,7 +192,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
             width: screenWidth / 6,
             child: Icon(
               iconData,
-              color: Color(0xff9170e6),
+              color: AppColors.primary,
             ),
           ),
           Expanded(

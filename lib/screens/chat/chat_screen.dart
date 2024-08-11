@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code/models/messageModel.dart';
 import 'package:qr_code/screens/chat/viewModel_shat.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/widgets.dart';
 
@@ -59,7 +57,9 @@ class _ChatScreenState extends State<ChatScreen> {
             screenWidth: screenWidth,
             screenHeight: screenHeight,
             userid: widget.id.toString(),
-            function: () {}),
+            function: () {
+
+            }),
       ),
       body: ChangeNotifierProvider(
         create: (context) => viewModelChat,
@@ -125,18 +125,31 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.end,
                                                       children: [
-                                                        Text(
-                                                          "  ${messageData['message']}  ",
-                                                          style:
-                                                          TextStyle(
-                                                            fontWeight: FontWeight.w700,
-                                                              fontSize: screenWidth*0.046,
+                                                    messageData['image'].toString().isNotEmpty?
+                                                        Container(
+                                                          child: Image.network(
 
-                                                              color:widget.senderId==
+                                                            messageData['image'],
+                                                            loadingBuilder:(context, child, loadingProgress) {
+                                                              if(loadingProgress==null)return child;
+                                                              return Center(
+                                                                child: CircularProgressIndicator(
+                                                                  
+                                                                ),
+                                                              );
+                                                            },),
+                                                        ):Text(
+                                                      "  ${messageData['message']}  ",
+                                                      style:
+                                                      TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: screenWidth*0.046,
+
+                                                          color:widget.senderId==
 
                                                               messageData['senderId']?Colors.black:
                                                           Colors.black),
-                                                        ),
+                                                    ),
                                                         Text(
                                                           "  $formattedTime  ",
                                                           style:
@@ -196,13 +209,20 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: InputDecoration(
                   icon: IconButton(
                       onPressed: () {
-                        viewModelChat.sendMessageTo(
+                        controller.text.isNotEmpty?
+                      viewModelChat.sendMessageTo(
+
                             senderId: widget.senderId.toString(),
                             message: controller.text,
-                            id: widget.id.toString());
+                            id: widget.id.toString(), image: '',
+                         // image: ''
+                        ):print("is empty");
                         controller.clear();
-                      },
-                      icon: Icon(Icons.send)),
+                        },
+                      icon:
+                      Icon(Icons.send,color:
+
+                      Colors.blue)),
                   filled: true,
 
                   fillColor: Color(0xFFF1F1F1),
@@ -216,6 +236,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     vertical: screenHeight / 35,
                   ),
                   border: InputBorder.none,
+
                   hintText: "  Type Your message",
                   hintStyle: TextStyle(
                     color: Colors.black,
@@ -226,8 +247,10 @@ class _ChatScreenState extends State<ChatScreen> {
               obscureText: false,
             ),
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.image)),
-          IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.mic)),
+          IconButton(onPressed: () async {
+            viewModelChat.openGallery(widget.id,widget.senderId);
+          }, icon: Icon(Icons.image)),
+       //   IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.mic)),
         ],
       ),
     );

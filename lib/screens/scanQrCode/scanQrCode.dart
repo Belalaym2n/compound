@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code/models/user.dart';
-import 'package:qr_code/screens/admin_panel/uploadForFirebaseDatabse.dart'; // For PlatformException
+import 'package:qr_code/screens/admin_panel/uploadForFirebaseDatabse.dart';
+import 'package:qr_code/utils/app_colors.dart'; // For PlatformException
 
 class QRScanPage extends StatefulWidget {
   @override
@@ -17,11 +18,20 @@ class _QRScanPageState extends State<QRScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Scan QR Code')),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text('Scan QR Code',style: TextStyle(
+            color: Colors.black, fontSize: 24,fontWeight: FontWeight.w700
+          ),)),
       body: Center(
         child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(AppColors.primary)
+          ),
           onPressed: _scanQRCode,
-          child: Text('Scan QR Code'),
+          child: Text('Scan QR Code',style: TextStyle(
+            color: Colors.white
+          ),),
         ),
       ),
     );
@@ -36,7 +46,7 @@ class _QRScanPageState extends State<QRScanPage> {
         .collection("Visitors").where("dataScanned").get();
 
       final result = await BarcodeScanner.scan();
-    bool hasBeenScannedBefore = visitors.docs
+     bool hasBeenScannedBefore = visitors.docs
         .any((doc)
     => doc['dataScanned']
         .toString() == result.rawContent.toString());
@@ -77,6 +87,7 @@ class _QRScanPageState extends State<QRScanPage> {
         content: Text(qrCode),
         actions: [
           TextButton(
+            
             child: Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();

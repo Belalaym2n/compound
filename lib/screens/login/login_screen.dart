@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/Home_page/home_page.dart';
 import 'package:qr_code/screens/admin_panel/admin_servises.dart';
@@ -162,7 +163,9 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
                             child: isLogin ?
 
                             CircularProgressIndicator(
+
                               color: Colors.white,
+
                             ) :
                             Text(
                               "Login",
@@ -195,9 +198,25 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   errorMessage(String error, BuildContext context) {
     return showDialog(context: context, builder: (context) =>
         AlertDialog(
+
           content: Text(error),
           title: Text('error'),
-        ),);
+          actions: [
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(AppColors.primary) ,// AppColors.primary
+                ),
+                onPressed: (){
+                  isLogin=false;
+                  Navigator.of(context).pop();
+                }, child: Text('OK',style: TextStyle(
+
+              color: Colors.white
+            ),))
+          ],
+        ),
+
+    );
   }
 
   @override
