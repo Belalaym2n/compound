@@ -8,6 +8,7 @@ itemWidger({
   required double screenHeight,
   required Function functionNavigate,
   required String image,
+   IconData? icon,
 
   required String text}){
   return
@@ -39,7 +40,7 @@ itemWidger({
                 //       image: DecorationImage(image: AssetImage(image))
                 //   ),
                 // ),
-                Icon(Icons.person,color: Colors.white,size: screenWidth*0.14,
+                Icon(icon,color: Colors.white,size: screenWidth*0.14,
                     ),
                 Text(text,style: TextStyle(
                   color: Colors.white,

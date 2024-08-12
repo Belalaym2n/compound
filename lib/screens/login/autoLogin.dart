@@ -6,6 +6,8 @@ import 'package:qr_code/screens/onBoard/onBoardPage.dart';
 import 'package:qr_code/screens/scanQrCode/scanQrCode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../bottom_navigation/bottomNavigation.dart';
+
 class AutoLogin extends StatefulWidget {
   @override
   State<AutoLogin> createState() => _AutoLoginState();
@@ -45,7 +47,7 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
-    return  isAdmin?AdminServices():isLogin? HomePage():
+    return  isAdmin?AdminServices():isLogin? BottomNav():
     isSecurity?QRScanPage(): OnBoardPage();
   }
 

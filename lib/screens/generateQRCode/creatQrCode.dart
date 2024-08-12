@@ -58,113 +58,116 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
       resizeToAvoidBottomInset: false,
       body: ChangeNotifierProvider(
         create: (context) => viewModel,
-        builder: (context, child) => Column(
-          children: [
-            SizedBox(
-              height: 140,
-            ),
-            if (controllerName.text.isNotEmpty)
-              Center(
-                child: Column(
-                  children: [
-                    Screenshot(
-                      controller: _screenshotController,
-                      child: QrImageView(
-                        backgroundColor: Colors.white,
-                        data: "${controllerName.text}Id is :$id date time:${DateTime.now()}",
-                        size: screenWidth * 0.6,
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenHight * 0.04,
-                    ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                controllerName.text = '';
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize:
-                                  Size(screenWidth * 0.6, screenHight / 15),
-                              backgroundColor: AppColors.primary,
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18)),
-                            ),
-                            child: const Text(
-                              "Regenerate Qr Code",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                            ))),
-                    SizedBox(
-                      height: screenHight * 0.04,
-                    ),
-                    FloatingActionButton(
-                      backgroundColor: AppColors.primary,
-                      onPressed: () async {
-                        // Capture the QR code widget as an image
-                        viewModel.shareQrCode(_screenshotController);
-                      },
-                      child: Icon(
-                        Icons.share,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+        builder: (context, child) => SingleChildScrollView(
+
+          child: Column(
+            children: [
+              SizedBox(
+                height: 140,
               ),
-            if (controllerName.text.isEmpty)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+              if (controllerName.text.isNotEmpty)
+                Center(
                   child: Column(
                     children: [
-
-                      SizedBox(
-                        height: screenHight * 0.13,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: customFormField(
-                            hintText: 'Enter your visitor full name',
-                            controller: controllerName,
-                            iconData: Icons.person,
-                            obscureText: false),
+                      Screenshot(
+                        controller: _screenshotController,
+                        child: QrImageView(
+                          backgroundColor: Colors.white,
+                          data: "${controllerName.text}Id is :$id date time:${DateTime.now()}",
+                          size: screenWidth * 0.6,
+                        ),
                       ),
                       SizedBox(
-                        height: screenHight * 0.02,
+                        height: screenHight * 0.04,
                       ),
                       Align(
                           alignment: Alignment.center,
                           child: ElevatedButton(
                               onPressed: () {
-                                setState(() {});
+                                setState(() {
+                                  controllerName.text = '';
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 fixedSize:
-                                    Size(screenWidth * 0.8, screenHight / 15),
+                                    Size(screenWidth * 0.6, screenHight / 15),
                                 backgroundColor: AppColors.primary,
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18)),
                               ),
                               child: const Text(
-                                "Create Qr Code",
+                                "Regenerate Qr Code",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ))),
+                      SizedBox(
+                        height: screenHight * 0.04,
+                      ),
+                      FloatingActionButton(
+                        backgroundColor: AppColors.primary,
+                        onPressed: () async {
+                          // Capture the QR code widget as an image
+                          viewModel.shareQrCode(_screenshotController);
+                        },
+                        child: Icon(
+                          Icons.share,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
-          ],
+              if (controllerName.text.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+          
+                        SizedBox(
+                          height: screenHight * 0.13,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: customFormField(
+                              hintText: 'Enter full name visitor',
+                              controller: controllerName,
+                              iconData: Icons.person,
+                              obscureText: false),
+                        ),
+                        SizedBox(
+                          height: screenHight * 0.02,
+                        ),
+                        Align(
+                            alignment: Alignment.center,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {});
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize:
+                                      Size(screenWidth * 0.8, screenHight / 15),
+                                  backgroundColor: AppColors.primary,
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)),
+                                ),
+                                child: const Text(
+                                  "Create Qr Code",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ))),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -10,6 +10,7 @@ import 'package:qr_code/utils/widgets.dart';
 import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_code/utils/app_images.dart';
 
+import '../bottom_navigation/bottomNavigation.dart';
 import '../scanQrCode/scanQrCode.dart';
 
 
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        customTitle("Employee ID", screenWidth),
+                        customTitle("Owner ID", screenWidth),
                         SizedBox(
                           height: screenHeight / 70,
                         ),
@@ -230,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   @override
   navigateUser(BuildContext context) {
     return Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
-        (context) => HomePage(),
+        (context) => BottomNav(),
 
     ), (route) => false);
   }

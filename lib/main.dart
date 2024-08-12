@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         List<NotificationModel>notifications=
         [NotificationModel(description: notification.body.toString(),tittle: notification.title.toString(),image: notification.bigPicture.toString())] ;
         NotificationService.saveNotifications(notifications);
-        navigatorKey.currentState?.push(MaterialPageRoute(
+        navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(
 
           builder: (context)=>NotificationScreen(
             tittle: notification.title!,
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             imageUrl: notification.bigPicture??''
           ),
 
-        ));
+        ),(route) => false,);
 
       },
     );

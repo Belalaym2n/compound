@@ -117,7 +117,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                                 animatedTexts: [
 
 
-                                  TyperAnimatedText(   "Welcome To Qr Code App",
+                                  TyperAnimatedText("Welcome To Official APP\n         For Compound",
                                 textStyle:  const TextStyle(
                                     color: Colors.black,fontSize: 23,
                                     fontWeight: FontWeight.w900),

@@ -43,13 +43,18 @@ class _GetAllAdvState extends State<GetAllAdv> {
               } else {
               final Advs = snapshot.data!.docs;
               return Expanded(
-                child: ListView.builder(
-                itemCount: Advs.length,
-                itemBuilder: (context, index) {
+                child:GridView.builder(
+                  itemCount: Advs.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: (192 / 237),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16),
+                  itemBuilder: (context, index) {
 
                 final advs = Advs[index];
 
-                return notificationItem(tittle:advs['tittle'].toString(),
+                return products(tittle:advs['tittle'].toString(),
                 description:advs['description'].toString() ,
                 imageUrl:advs['image']
                 );
@@ -65,74 +70,78 @@ class _GetAllAdvState extends State<GetAllAdv> {
       ),
     );
   }
+  products({
+  required String tittle,
+  required String imageUrl,
+  required String description,
+  })=>Container(
 
-  notificationItem({
-    required String tittle,
-    required String imageUrl,
-    required String description,
-  }) {
-    return InkWell(
-      onTap: () {
+    margin: EdgeInsets.only(left: 12, top: 16,right: 12),
+    //height: screenHeight*0.2,
 
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Material(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              color: AppColors.primary,
-            ),
-            width: screenWidth,
-            height: screenHeight * 0.12,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: screenWidth * 0.02,
-                ),
-                Image.network(imageUrl, width: 50,
-                  height: 50, fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    print(error);
-                    // Display a placeholder image if the network image fails to load
-                    return Icon(Icons.error, size: 50,color: AppColors.primary,);
-                  },
-                ),
-                SizedBox(
-                  width: screenWidth * 0.01,
-                  height: screenHeight * 0.02,
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight * 0.01,
+    child:
+           Material(
+             elevation: 20,
+             borderRadius: BorderRadius.circular(12),
+             child: Container(
+              decoration: BoxDecoration(
+                 // border: Border.all(color: AppColors.primary,width: 2),
+                  borderRadius: BorderRadius.circular(16)
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start ,
+                children: [
+                  Container(
+
+                    width: screenWidth*0.45,
+                    height: screenHeight*0.18,
+
+
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+
+                      image: DecorationImage(
+
+                        image: NetworkImage(imageUrl),
+
+                        fit: BoxFit.fill,
+
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                      ),
                     ),
-                    Text(
-                      "${ tittle.length>10? tittle.substring(0,10):tittle}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Text('${description.length>10?description.substring(0,10):description}',
-                        maxLines: 1, style: TextStyle(color: Colors.white))
-                  ],
-                ),
-                SizedBox(
-                  width: screenWidth * 0.2,
-                ),
-                Expanded(
-                    child: Icon(
-                      Icons.notification_add,
-                      color: Colors.white,
-                      size: screenWidth * 0.1,
-                    ))
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child:  Text(tittle,style: TextStyle(
+                        fontWeight: FontWeight.w600,fontSize: screenWidth*0.03
+                    ),),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: screenWidth*0.3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child:  Text(description,style: TextStyle(
+                              fontWeight: FontWeight.w600,fontSize: screenWidth*0.03
+                          ),),
+                        ),
+                      ),
+
+
+                      Icon(Icons.ads_click)
+                    ],
+                  )
+                ],
+              ),
+                       ),
+           ));
+
+
 }

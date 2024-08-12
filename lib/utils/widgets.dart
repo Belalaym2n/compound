@@ -54,8 +54,8 @@ Widget customFormField(
                 border: InputBorder.none,
                 hintText: hintText,
               ),
-              minLines: 1, // لتحديد الحد الأدنى للارتفاع
-              maxLines: null,
+              //minLines: 1, // لتحديد الحد الأدنى للارتفاع
+           //  maxLines: null,
               obscureText: obscureText,
             ),
           ),
@@ -67,7 +67,7 @@ Widget customFormField(
 
 gotToChat({required double screenWidth,
   required Function function,
-  required double screenHeight, required String userid}) {
+  required double screenHeight, required String? userid}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: InkWell(
@@ -92,8 +92,9 @@ SizedBox(
             child: Center(
               child: Row(
                 children: [
-           IconButton(onPressed: (){},
-               icon: Icon(Icons.arrow_back_ios)),
+          SizedBox(
+            width: screenWidth*0.04,
+          ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(30),
                     child: Container(

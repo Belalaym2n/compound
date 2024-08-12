@@ -26,17 +26,22 @@ class _GetAllNotificationsState extends State<GetAllNotifications> {
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'All Notifications',
-          style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: screenWidth * 0.05),
-        ),
+        elevation: 0,
+        toolbarHeight: 0,
+
       ),
       body: Column(
         children: [
+          Text(
+            'All Notifications',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: screenWidth * 0.05),
+          ),
+          SizedBox(
+            height: screenHeight*0.02,
+          ),
           Expanded(
             child:  FutureBuilder<List<NotificationModel>>(
     future: NotificationService.getNotifications(), // Call your getNotifications function
@@ -83,26 +88,32 @@ class _GetAllNotificationsState extends State<GetAllNotifications> {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Material(
+          elevation: 20,
           borderRadius: BorderRadius.circular(12),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              color: AppColors.primary,
+              color: Colors.white38,
             ),
             width: screenWidth,
             height: screenHeight * 0.12,
             child: Row(
               children: [
-                SizedBox(
-                  width: screenWidth * 0.02,
-                ),
-                Image.network(imageUrl!, width: 50,
-                  height: 50, fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    print(error);
-                    // Display a placeholder image if the network image fails to load
-                    return Icon(Icons.error, size: 50,color: AppColors.primary,);
-                  },
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(imageUrl!, width: screenWidth*0.3,
+                      height: screenHeight*0.12, fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print(error);
+                        // Display a placeholder image if the network image fails to load
+                        return Icon(Icons.error, size: 50,color: AppColors.primary,);
+                      },
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: screenWidth * 0.01,
@@ -116,12 +127,12 @@ class _GetAllNotificationsState extends State<GetAllNotifications> {
                     Text(
                       "${ tittle.length>10? tittle.substring(0,10):tittle}",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w700),
                     ),
                     Text('${description.length>10?description.substring(0,10):description}',
-                        maxLines: 1, style: TextStyle(color: Colors.white))
+                        maxLines: 1, style: TextStyle(color: Colors.black))
                   ],
                 ),
                 SizedBox(
@@ -129,8 +140,8 @@ class _GetAllNotificationsState extends State<GetAllNotifications> {
                 ),
                 Expanded(
                     child: Icon(
-                  Icons.notification_add,
-                  color: Colors.white,
+                  Icons.notification_important,
+                  color: Colors.black,
                   size: screenWidth * 0.1,
                 ))
               ],

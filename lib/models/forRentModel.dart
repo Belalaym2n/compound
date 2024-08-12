@@ -1,5 +1,5 @@
 class ForRentmodel{
-  String image;
+  final  image;
   String tittle;
   String description;
 
@@ -14,7 +14,7 @@ class ForRentmodel{
   ForRentmodel.fromJson(Map<String, dynamic> json)
       : this(
     tittle: json['tittle'] as String,
-    image: json['image'] as String,
+    image: json['image'] ,
     description: json['description'] as String,
   );
 

@@ -58,6 +58,8 @@ dependencies:
   zego_uikit: ^2.26.1
   onesignal_flutter: ^5.2.2
   multiple_images_picker: ^1.0.1
+  carousel_slider: ^5.0.0
+  curved_navigation_bar: ^1.0.6
 
 
 

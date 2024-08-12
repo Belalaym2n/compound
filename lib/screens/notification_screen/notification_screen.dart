@@ -5,6 +5,7 @@ import 'package:qr_code/utils/app_images.dart';
 import '../../utils/app_colors.dart';
 
 class NotificationScreen extends StatefulWidget {
+
 final String ? tittle;
   final String ? description;
    final String  imageUrl;

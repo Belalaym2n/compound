@@ -80,7 +80,8 @@ class _AdminServicesState extends State<AdminServices>
             itemWidger(
                 image: AppImages.addUser,
                 functionNavigate: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeForAdvs(),));
+                  Navigator.push(context, MaterialPageRoute(builder:
+                      (context) => HomeForAdvs(),));
                 },
                 screenHeight: screenHeight * 0.1,
                 text: 'For Sale',

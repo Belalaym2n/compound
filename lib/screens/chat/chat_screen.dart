@@ -197,6 +197,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: TextFormField(
+              maxLines: null,
 
         scribbleEnabled: true,
 
@@ -226,6 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   filled: true,
 
                   fillColor: Color(0xFFF1F1F1),
+
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(color: Colors.white)),
