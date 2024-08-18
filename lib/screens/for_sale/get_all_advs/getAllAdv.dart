@@ -48,8 +48,8 @@ class _GetAllAdvState extends State<GetAllAdv> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: (192 / 237),
                       crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16),
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2),
                   itemBuilder: (context, index) {
 
                 final advs = Advs[index];
@@ -128,7 +128,10 @@ class _GetAllAdvState extends State<GetAllAdv> {
                         width: screenWidth*0.3,
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
-                          child:  Text(description,style: TextStyle(
+                          child:  Text(
+
+                              description.length<10?
+                              "$description":"${description.substring(0,10)}",style: TextStyle(
                               fontWeight: FontWeight.w600,fontSize: screenWidth*0.03
                           ),),
                         ),

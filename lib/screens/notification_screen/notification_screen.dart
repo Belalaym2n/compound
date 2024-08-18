@@ -33,34 +33,39 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: AppBar(
        backgroundColor: Colors.white,
         elevation: 0,
+        toolbarHeight:screenHeight*0.04,
 
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-              Image.network(widget.imageUrl,width: screenWidth,
-                  height: screenHeight*0.4,
-                  fit: BoxFit.fitWidth, errorBuilder: (context, error, stackTrace) {
-                  print(error);
-                  // Display a placeholder image if the network image fails to load
-                  return Icon(Icons.error, size: 50,color: Colors.white,);
-                },),
+            Image.network(widget.imageUrl,width: screenWidth,
+                height: screenHeight*0.4,
+                fit: BoxFit.fitWidth, errorBuilder: (context, error, stackTrace) {
+                print(error);
+                // Display a placeholder image if the network image fails to load
+                return Icon(Icons.error, size: 50,color: Colors.white,);
+              },),
 
-            Text(widget.tittle!,style: TextStyle(
-              color: Colors.black,fontWeight: FontWeight.w800,
-            fontSize: screenWidth*0.05),),
-            Text(widget.description!,style: TextStyle(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(widget.tittle!,style: TextStyle(
+              color: Colors.black,fontWeight: FontWeight.w700,
+            fontSize: screenWidth*0.06),),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Text(widget.description!,style: TextStyle(
                 color: Colors.black,fontWeight: FontWeight.w500,
                 fontSize: screenWidth*0.03)),
+          ),
 
 
 
-            // Show image if URL is provided
-            SizedBox(height: 8),
-          ]))
+          // Show image if URL is provided
+          SizedBox(height: 8),
+        ])
     );
   }
 }

@@ -111,7 +111,7 @@ class _ForSaleState extends State<ForSale> {
                                       tittleController.text.isNotEmpty &&
                                       descriptionController.text.isNotEmpty
                                   ? viewModel.uploadToDataBase(
-                                      image: viewModel.imageFile.toString(),
+                                      image: viewModel.imageUrl.toString(),
                                       tittle: tittleController.text,
                                       description: descriptionController.text)
                                   : showDialog(

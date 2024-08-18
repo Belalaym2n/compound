@@ -14,7 +14,7 @@ import '../screens/splash_screen/splash_screen.dart';
 
 class AppRoutes {
   static const String addUser = 'add';
-  static const String adminService = '/afsd';
+  static const String adminService = '/sda';
   static const String generateQr = 'generatt';
   static const String allUserSent = '/sfs';
   static const String splash = '/';

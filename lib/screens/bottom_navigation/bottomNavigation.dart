@@ -77,7 +77,7 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
           height: 50,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           color: AppColors.primary,
 // animationCurve: Curves.fastOutSlowIn,
 

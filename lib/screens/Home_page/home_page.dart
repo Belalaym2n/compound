@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,87 +6,147 @@ import 'package:provider/provider.dart';
 import 'package:qr_code/models/showCatModel.dart';
 import 'package:qr_code/screens/Home_page/viewModeLHome.dart';
 import 'package:qr_code/screens/chat/chat_screen.dart';
+import 'package:qr_code/screens/for_sale/get_all_advs/getAllAdv.dart';
+import 'package:qr_code/screens/generateQRCode/creatQrCode.dart';
+import 'package:qr_code/screens/notification_screen/getAllNotifcation.dart';
 import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_code/utils/app_images.dart';
+import 'package:qr_code/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+import '../../models/notification_model.dart';
+import '../notification_screen/notification_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   double screenHeight = 0;
 
   double screenWidth = 0;
-  ViewModelHome viewModelHome = ViewModelHome();
+
   String? name;
   SharedPreferences? sharedPreferences;
+  late AnimationController controller;
 
   getUser() async {
     sharedPreferences = await SharedPreferences.getInstance();
+
     setState(() {
       name = sharedPreferences?.getString("Id");
     });
     return name;
   }
 
+  late List<ShowCatModel> data;
+  int _itemCount = 0;
+  ViewModelHome viewModelHome = ViewModelHome();
   @override
   void initState() {
+    data = [];
+
+    controller = AnimationController(
+      duration: Duration(seconds: 3),
+      vsync: this,
+    )..forward();
+    setState(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          data = [
+            ShowCatModel(
+                image: AppImages.cat3,
+                text: 'chat',
+                function: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                            id: name.toString(), senderId: name.toString()),
+                      ));
+                }),
+            ShowCatModel(
+                image: AppImages.cat2,
+                text: 'Notification',
+                function: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GetAllNotifications(),
+                      ));
+                }),
+            ShowCatModel(
+                image: AppImages.cat1,
+                text: 'QR',
+                function: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GeneratQrCode(),
+                      ));
+                }),
+            ShowCatModel(
+                image: AppImages.cat4,
+                text: 'rent',
+                function: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GetAllAdv(),
+                      ));
+                }),
+          ];
+          _itemCount = 4;
+        });
+      });
+    });
+
+
     getUser();
     // TODO: implement initState
     super.initState();
   }
 
+  int _currentIndex = 0;
+  Future<List<NotificationModel>> lastNotification=NotificationService.getNotifications();
   @override
   Widget build(BuildContext context) {
+
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    List<ShowCatModel> data = [
-      ShowCatModel(image
-          : AppImages.cat1, text: 'chat'),
-      ShowCatModel(image
-          : AppImages.cat2, text: 'Notification'),
-      ShowCatModel(image
-          : AppImages.cat1, text: 'QR'),
-      ShowCatModel(image
-          : AppImages.cat2, text: 'rent'),
-    ];
 
-    int _currentIndex = 0;
     List<String> imageUrls = [
       AppImages.slide2,
-      AppImages.slide2,
-      AppImages.slide2,
+      AppImages.slide1,
+      AppImages.slide3
     ];
 
-    return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
+    return ChangeNotifierProvider(
+      create: (context) => viewModelHome,
+      builder: (context, child) =>  Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+          ),
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text(
-                      'Welcome ${name}',
-                      style: TextStyle(
-                          color: AppColors.primary,
-          
-                          fontWeight:
-                      FontWeight.w600, fontSize: 22),
+                    SizedBox(
+                      width: screenWidth * 0.3,
                     ),
-                    Spacer(),
-                    Image.asset(
-                      AppImages.logoImage,
-                      height: screenHeight * 0.1,
-                      color: Colors.black,
+                    Center(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Welcome ${name}',
+                        style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22),
+                      ),
                     ),
                   ],
                 ),
@@ -98,11 +159,11 @@ class _HomePageState extends State<HomePage> {
                     // autoPlayInterval:  Duration(
                     //   seconds: 4
                     // ),
-          
+
                     autoPlay: true,
-          
+
                     autoPlayCurve: Curves.linear,
-                    height: screenHeight * 0.25,
+                    height: screenHeight * 0.2,
                     aspectRatio: 16 / 9,
                     viewportFraction: 0.93,
                     initialPage: 0,
@@ -112,30 +173,52 @@ class _HomePageState extends State<HomePage> {
                     enlargeFactor: 0.2,
                     scrollDirection: Axis.horizontal,
                     onPageChanged: (index, reason) {
-                      setState(() {
+
                         _currentIndex = index;
-                      });
+
+
                     },
                   ),
                   items: imageUrls.map((imageUrl) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20)),
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.asset(
-                          imageUrl,
-                          fit: BoxFit.fill,
+                    return Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(20)),
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.asset(
+                              height: screenHeight * 0.18,
+                              imageUrl,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                         ),
-                      ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: screenHeight * 0.16,
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  imageUrls.length,
+                                  (index) => dot(index),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     );
                   }).toList(),
                 ),
               ),
               SizedBox(
-                height: screenHeight * 0.02,
+                height: screenHeight * 0.01,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -150,9 +233,7 @@ class _HomePageState extends State<HomePage> {
               ),
               catItem(data),
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 8
-                ),
+                padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   'For Rent',
                   textAlign: TextAlign.start,
@@ -162,106 +243,178 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w700),
                 ),
               ),
-              products(),
+              FutureBuilder(future:
+              viewModelHome.getAllAdV(),
+                  builder: (context, snapshot) {
 
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator()); // Loading indicator
+                    } else if (snapshot.hasError) {
+                      // print(snapshot.error.toString());
+                      return Center(child: Text('Error: ${snapshot.error}')); // Error handling
+                    } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(child: Text('No Advs found')); // Empty list handling
+                    } else {
+                      final Advs = snapshot.data!.docs;
+                      return Expanded(
+                        child:ListView.builder(
+                          scrollDirection: Axis.horizontal,
 
-            ],
-          ),
-        ));
-  }
+                          itemCount: Advs.length,
 
-  catItem(List<ShowCatModel>cats) => Material(
+                          itemBuilder: (context, index) {
 
-    child: Container(
-          height: screenHeight*0.14,
-          margin: EdgeInsets.only(left: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12)
-          ),
-          child: GridView.builder(
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 0,
-                      mainAxisExtent: screenHeight*0.12,
-                      crossAxisCount: 1),
-              scrollDirection: Axis.horizontal,
-              itemCount: 4,
-              itemBuilder: (context, i) {
-                return Column(
+                            final advs = Advs[index];
+
+                            return Padding(padding:EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 6
+                            ),
+                                child: products(tittle:advs['tittle'].toString(),
+                                description:advs['description'].toString() ,
+                                imageUrl:advs['image']
+                            ));
+                          },
+                        ),
+                      );}
+                  }
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  Container(
-                  width: screenWidth*0.23,
-                  height: screenHeight*0.1,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(cats[i].image??''),
-                      fit: BoxFit.fill,
-                    ),
-                    shape: BoxShape.circle,
-                  ),),
-                    SizedBox(
-                      height: 8,
-                    ),
                     Text(
-                      "${cats[i].text}",
+                      'Notifications',
+                      textAlign: TextAlign.start,
                       style: TextStyle(
-                        color: Color(0xFF06004E),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                          color: AppColors.primary,
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 24),
+                      child: Row(
+                        children: [
+                          Text(
+                            'See ALL',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: screenWidth * 0.03,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                );
+                ),
+              ),
+              notificationItem(
+                  tittle: "Last notification",
+                  description: "Last description",
+                  imageUrl: AppImages.slide1),
+            ],
+          )),
+    );
+  }
+
+  catItem(List<ShowCatModel> cats) => Material(
+        child: Container(
+          height: screenHeight * 0.13,
+          margin: EdgeInsets.only(left: 16),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 0,
+                  mainAxisExtent: screenHeight * 0.12,
+                  crossAxisCount: 1),
+              scrollDirection: Axis.horizontal,
+              itemCount: cats.length,
+              itemBuilder: (context, i) {
+                return FadeTransition(
+                    opacity:
+                        Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+                      parent: controller,
+                      curve: Interval(i / _itemCount, (i + 1) / _itemCount),
+                    )),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            print("belal");
+                            cats[i].function();
+                          },
+                          child: Container(
+                            width: screenWidth * 0.2,
+                            height: screenHeight * 0.07,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(cats[i].image ?? ''),
+                                fit: BoxFit.fill,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "${cats[i].text}",
+                          style: TextStyle(
+                            color: Color(0xFF06004E),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ));
               }),
         ),
-  );
-  products()=>Material(
-    elevation: 5,
-    child: Container(
+      );
 
-      margin: EdgeInsets.only(left: 16, top: 16),
-      height: screenHeight*0.2,
-      child: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(
-            width: 16,
-          ),
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Material(
-              borderRadius: BorderRadius.circular(12),
-              elevation: 20,
-              shadowColor: AppColors.primary,
+  products({
+    required String tittle,
+    required String imageUrl,
+    required String description,
+  }) =>
+      InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NotificationScreen(
+                    tittle: tittle,
+                    imageUrl: imageUrl!,
+                    description: description),
+              ));
+        },
+        child: Material(
+          borderRadius: BorderRadius.circular(12),
+          elevation: 20,
+          shadowColor: AppColors.primary,
+          child: Container(
+            
 
+            padding: EdgeInsets.only(
+              left: 14,right: 14,
 
-              child: Container(
-                decoration: BoxDecoration(
-                  //border: Border.all(color: AppColors.primary,width: 2),
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start ,
-                  children: [
-                    Container(
-
-                      width: screenWidth*0.4,
-                      height: screenHeight*0.12,
-                      padding: EdgeInsets.only(
-                        top: 8,
-                        left: 134,
-                        right: 8,
-                        bottom: 98,
-                      ),
+            ),
+            decoration: BoxDecoration(
+               // border: Border.all(color: AppColors.primary,width: 2),
+                borderRadius: BorderRadius.circular(16)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: screenWidth * 0.4,
+                      height: screenHeight * 0.14,
+              
                       clipBehavior: Clip.antiAlias,
                       decoration: ShapeDecoration(
-
-                        image: DecorationImage(
-
-                          image: AssetImage(AppImages.slide2),
-
-                          fit: BoxFit.fill,
-
-                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
@@ -270,54 +423,153 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       child: Container(
-                        width: screenWidth*0.05,
-                        height: screenHeight*0.015,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: OvalBorder(),
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0x26000000),
-                              blurRadius: 10,
-                              offset: Offset(0, 5),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.favorite_border,
-                          size: 12,
-                        ),
-                      ),
+              
+              
+                        child: CachedNetworkImage(imageUrl: imageUrl,
+                          fit: BoxFit.fill,
+                          progressIndicatorBuilder: (
+              
+                              context,
+              
+                              url, downloadProgress) =>
+                            Center(
+                              child: CircularProgressIndicator(
+              
+              
+                                  value:
+                              downloadProgress.progress,),
+                            ),
+                          errorWidget: (context, url, error) => Icon(Icons.error),),
+                        // ),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      "$tittle",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: screenWidth * 0.03),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child:  Text("tittle",style: TextStyle(
-                        fontWeight: FontWeight.w600,fontSize: screenWidth*0.03
-                      ),),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: screenWidth*0.3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child:  Text(" All Description",style: TextStyle(
-                                fontWeight: FontWeight.w600,fontSize: screenWidth*0.03
-                            ),),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: screenWidth * 0.3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(
+                            description.length<20?
+                            "$description":"${description.substring(0,20)}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: screenWidth * 0.03),
                           ),
                         ),
+                      ),
+                      Icon(Icons.ads_click),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 
-
-                        Icon(Icons.ads_click),
-
-                      ],
-                    )
+  notificationItem({
+    required String tittle,
+    String? imageUrl,
+    required String description,
+  }) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NotificationScreen(
+                  tittle: tittle,
+                  imageUrl: imageUrl!,
+                  description: description),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Material(
+          elevation: 20,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              color: Colors.white38,
+            ),
+            width: screenWidth,
+            height: screenHeight * 0.12,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      imageUrl!,
+                      width: screenWidth * 0.3,
+                      height: screenHeight * 0.12,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print(error);
+                        // Display a placeholder image if the network image fails to load
+                        return Icon(
+                          Icons.error,
+                          size: 50,
+                          color: AppColors.primary,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: screenWidth * 0.01,
+                  height: screenHeight * 0.02,
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.01,
+                    ),
+                    Text(
+                      "${tittle.length > 10 ? tittle.substring(0, 10) : tittle}",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                        '${description.length > 10 ? description.substring(0, 10) : description}',
+                        maxLines: 1,
+                        style: TextStyle(color: Colors.black))
                   ],
                 ),
-              ),
-            );
-          }),
-    ),
-  );
+                SizedBox(
+                  width: screenWidth * 0.2,
+                ),
+                Expanded(
+                    child: Icon(
+                  Icons.notification_important,
+                  color: Colors.red,
+                  size: screenWidth * 0.1,
+                ))
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  dot(int index) => Container(
+      height: screenHeight * 0.01,
+      width: screenWidth * 0.03,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _currentIndex == index ? Colors.black : Colors.grey));
 }
