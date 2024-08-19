@@ -13,7 +13,6 @@ class QRScanPage extends StatefulWidget {
 }
 
 class _QRScanPageState extends State<QRScanPage> {
-  bool _hasScanned = false;
 
   @override
   Widget build(BuildContext context) {

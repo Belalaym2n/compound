@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late List<ShowCatModel> data;
   int _itemCount = 0;
   ViewModelHome viewModelHome = ViewModelHome();
+
   @override
   void initState() {
     data = [];
@@ -102,17 +103,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       });
     });
 
-
     getUser();
     // TODO: implement initState
     super.initState();
   }
 
   int _currentIndex = 0;
-  Future<List<NotificationModel>> lastNotification=NotificationService.getNotifications();
+  Future<List<NotificationModel>> lastNotification =
+      NotificationService.getNotifications();
+
   @override
   Widget build(BuildContext context) {
-
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     return ChangeNotifierProvider(
       create: (context) => viewModelHome,
-      builder: (context, child) =>  Scaffold(
+      builder: (context, child) => Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
           ),
@@ -173,10 +174,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     enlargeFactor: 0.2,
                     scrollDirection: Axis.horizontal,
                     onPageChanged: (index, reason) {
-
-                        _currentIndex = index;
-
-
+                      _currentIndex = index;
                     },
                   ),
                   items: imageUrls.map((imageUrl) {
@@ -201,15 +199,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             SizedBox(
                               height: screenHeight * 0.16,
                             ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  imageUrls.length,
-                                  (index) => dot(index),
-                                ),
-                              ),
-                            ),
                           ],
                         )
                       ],
@@ -218,7 +207,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                height: screenHeight * 0.01,
+                height: screenHeight * 0.00,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -233,52 +222,76 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               catItem(data),
               Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  'For Rent',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: screenWidth * 0.05,
-                      fontWeight: FontWeight.w700),
+                padding: const EdgeInsets.only(left: 8, right: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'For Rent',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GetAllAdv(),
+                            ));
+                      },
+                      child: Text(
+                        'See ALL',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: screenWidth * 0.03,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              FutureBuilder(future:
-              viewModelHome.getAllAdV(),
+              FutureBuilder(
+                  future: viewModelHome.getAllAdV(),
                   builder: (context, snapshot) {
-
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator()); // Loading indicator
+                      return Center(
+                          child:
+                              CircularProgressIndicator()); // Loading indicator
                     } else if (snapshot.hasError) {
                       // print(snapshot.error.toString());
-                      return Center(child: Text('Error: ${snapshot.error}')); // Error handling
-                    } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text('No Advs found')); // Empty list handling
+                      return Center(
+                          child: Text(
+                              'Error: ${snapshot.error}')); // Error handling
+                    } else if (!snapshot.hasData ||
+                        snapshot.data!.docs.isEmpty) {
+                      return Center(
+                          child: Text('No Advs found')); // Empty list handling
                     } else {
                       final Advs = snapshot.data!.docs;
                       return Expanded(
-                        child:ListView.builder(
+                        child: ListView.builder(
+
                           scrollDirection: Axis.horizontal,
-
                           itemCount: Advs.length,
-
                           itemBuilder: (context, index) {
-
                             final advs = Advs[index];
 
-                            return Padding(padding:EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 6
-                            ),
-                                child: products(tittle:advs['tittle'].toString(),
-                                description:advs['description'].toString() ,
-                                imageUrl:advs['image']
-                            ));
+                            return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 7, vertical: 7),
+                                child: products(
+                                    tittle: advs['tittle'].toString(),
+                                    description: advs['description'].toString(),
+                                    imageUrl: advs['image']));
                           },
                         ),
-                      );}
-                  }
-              ),
+                      );
+                    }
+                  }),
 
               Padding(
                 padding: const EdgeInsets.only(left: 8),
@@ -286,7 +299,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Notifications',
+                      'Last Notifications',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: AppColors.primary,
@@ -311,10 +324,31 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              notificationItem(
-                  tittle: "Last notification",
-                  description: "Last description",
-                  imageUrl: AppImages.slide1),
+              FutureBuilder<List<NotificationModel>>(
+                  future: NotificationService.getLastNotifications(), // Call your getNotifications function
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator()); // Loading indicator
+                    } else if (snapshot.hasError) {
+                      // print(snapshot.error.toString());
+                      return Center(child: Text('Error: ${snapshot.error}')); // Error handling
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return
+                        notificationItem(
+                            tittle: "Wait Notification",
+                            description: "no notification exist",
+                            imageUrl: AppImages.cat2); // Empty list handling
+                    } else {
+                      final notifications = snapshot.data!;
+
+
+
+                          return notificationItem(tittle:notifications[0].tittle.toString(),
+                              description:notifications[0].description ,
+                              imageUrl:notifications[0].image);
+                                             }
+                  } ),
+
             ],
           )),
     );
@@ -347,7 +381,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             cats[i].function();
                           },
                           child: Container(
-                            width: screenWidth * 0.2,
+                            width: screenWidth * 0.17,
                             height: screenHeight * 0.07,
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -396,14 +430,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           elevation: 20,
           shadowColor: AppColors.primary,
           child: Container(
-            
+         //height: *0.7,
 
             padding: EdgeInsets.only(
-              left: 14,right: 14,
-
+              left: 14,
+              right: 14,
             ),
             decoration: BoxDecoration(
-               // border: Border.all(color: AppColors.primary,width: 2),
+                // border: Border.all(color: AppColors.primary,width: 2),
                 borderRadius: BorderRadius.circular(16)),
             child: SingleChildScrollView(
               child: Column(
@@ -412,7 +446,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   Container(
                       width: screenWidth * 0.4,
                       height: screenHeight * 0.14,
-              
                       clipBehavior: Clip.antiAlias,
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -423,23 +456,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                       ),
                       child: Container(
-              
-              
-                        child: CachedNetworkImage(imageUrl: imageUrl,
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl,
                           fit: BoxFit.fill,
-                          progressIndicatorBuilder: (
-              
-                              context,
-              
-                              url, downloadProgress) =>
-                            Center(
-                              child: CircularProgressIndicator(
-              
-              
-                                  value:
-                              downloadProgress.progress,),
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
                             ),
-                          errorWidget: (context, url, error) => Icon(Icons.error),),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
                         // ),
                       )),
                   Padding(
@@ -458,8 +486,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
                           child: Text(
-                            description.length<20?
-                            "$description":"${description.substring(0,20)}",
+                            description.length < 20
+                                ? "$description"
+                                : "${description.substring(0, 20)}",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: screenWidth * 0.03),
@@ -492,84 +521,81 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   description: description),
             ));
       },
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Material(
-          elevation: 20,
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              color: Colors.white38,
-            ),
-            width: screenWidth,
-            height: screenHeight * 0.12,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      imageUrl!,
-                      width: screenWidth * 0.3,
-                      height: screenHeight * 0.12,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        print(error);
-                        // Display a placeholder image if the network image fails to load
-                        return Icon(
-                          Icons.error,
-                          size: 50,
-                          color: AppColors.primary,
-                        );
-                      },
+      child: Material(
+        elevation: 30,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Material(
+            borderRadius: BorderRadius.circular(12),
+            elevation: 20,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: Colors.white38,
+              ),
+              width: screenWidth,
+              height: screenHeight * 0.12,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image. network(
+                        imageUrl!,
+                        width: screenWidth * 0.3,
+                        height: screenHeight * 0.12,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          print(error);
+                          // Display a placeholder image if the network image fails to load
+                          return Icon(
+                            Icons.error,
+                            size: 50,
+                            color: AppColors.primary,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: screenWidth * 0.01,
-                  height: screenHeight * 0.02,
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight * 0.01,
-                    ),
-                    Text(
-                      "${tittle.length > 10 ? tittle.substring(0, 10) : tittle}",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Text(
-                        '${description.length > 10 ? description.substring(0, 10) : description}',
-                        maxLines: 1,
-                        style: TextStyle(color: Colors.black))
-                  ],
-                ),
-                SizedBox(
-                  width: screenWidth * 0.2,
-                ),
-                Expanded(
-                    child: Icon(
-                  Icons.notification_important,
-                  color: Colors.red,
-                  size: screenWidth * 0.1,
-                ))
-              ],
+                  SizedBox(
+                    width: screenWidth * 0.01,
+                    height: screenHeight * 0.02,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: screenHeight * 0.01,
+                      ),
+                      Text(
+                        "${tittle.length > 20 ? tittle.substring(0, 20) : tittle}",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: screenWidth * 0.05,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                          '${description.length > 20 ? description.substring(0, 20) : description}',
+                          maxLines: 1,
+                          style: TextStyle(color: Colors.black))
+                    ],
+                  ),
+                  SizedBox(
+                    width: screenWidth * 0.16 ,
+                  ),
+                  Expanded(
+                      child: Icon(
+                    Icons.notification_important,
+                    color: Colors.red,
+                    size: screenWidth * 0.1,
+                  ))
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
-  dot(int index) => Container(
-      height: screenHeight * 0.01,
-      width: screenWidth * 0.03,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _currentIndex == index ? Colors.black : Colors.grey));
 }

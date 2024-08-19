@@ -46,10 +46,11 @@ class _GetAllAdvState extends State<GetAllAdv> {
                 child:GridView.builder(
                   itemCount: Advs.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (192 / 237),
+                      childAspectRatio: (192 / 220),
                       crossAxisCount: 2,
                       mainAxisSpacing: 2,
-                      crossAxisSpacing: 2),
+                      crossAxisSpacing: 2
+                  ),
                   itemBuilder: (context, index) {
 
                 final advs = Advs[index];

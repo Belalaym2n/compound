@@ -36,11 +36,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     OneSignal.Notifications.addClickListener(
       (event) {
-        print("basd");
+
         final notification = event.notification;
         List<NotificationModel>notifications=
-        [NotificationModel(description: notification.body.toString(),tittle: notification.title.toString(),image: notification.bigPicture.toString())] ;
+        [NotificationModel(description: notification.body.toString()
+            ,tittle: notification.title.toString(),
+            image: notification.bigPicture.toString())
+        ] ;
         NotificationService.saveNotifications(notifications);
+        NotificationService.saveLastNotifications(notifications);
         navigatorKey.currentState?.pushAndRemoveUntil(MaterialPageRoute(
 
           builder: (context)=>NotificationScreen(

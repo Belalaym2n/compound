@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/chat/viewModel_shat.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/widgets.dart';
 
@@ -28,9 +30,14 @@ TextEditingController controller = TextEditingController();
 
 class _ChatScreenState extends State<ChatScreen> {
   ViewModelChat viewModelChat = ViewModelChat();
-
+  checkAdmin()async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    var name =sharedPreferences.getString("Id");
+    return name;
+  }
   @override
   void initState() {
+    checkAdmin();
     // TODO: implement initState
     super.initState();
   }
@@ -39,8 +46,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    double screen = screenHeight * 0.8;
-    final firestore = FirebaseFirestore.instance;
+
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -56,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
         flexibleSpace: gotToChat(
             screenWidth: screenWidth,
             screenHeight: screenHeight,
-            userid: widget.id.toString(),
+            userid:checkAdmin()!=null?"Admin" :widget.id.toString(),
             function: () {
 
             }),
@@ -123,22 +130,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     child:
 
                                                     Column(
+                                      
                                                       crossAxisAlignment: CrossAxisAlignment.end,
                                                       children: [
-                                                    messageData['image'].toString().isNotEmpty?
+                                                    messageData['image']
+                                                        .toString().isNotEmpty?
                                                         Container(
-                                                          child: Image.network(
+                                                          child: CachedNetworkImage(
+                                                            progressIndicatorBuilder: (context, url, progress) => CircularProgressIndicator(),
 
-                                                            messageData['image'],
-                                                            loadingBuilder:(context, child, loadingProgress) {
-                                                              if(loadingProgress==null)return child;
-                                                              return Center(
-                                                                child: CircularProgressIndicator(
-                                                                  
-                                                                ),
-                                                              );
-                                                            },),
-                                                        ):Text(
+                                                            imageUrl:
+
+                                                             "${messageData['image']}",
+
+                                                          ) ) :Text(
                                                       "  ${messageData['message']}  ",
                                                       style:
                                                       TextStyle(
