@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/generateQRCode/viewModelQRCodeGenerate.dart';
 import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,10 +23,11 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
   ViewModelQrCodeGenerat viewModel = ViewModelQrCodeGenerat();
   String? id;
   String? address;
+
   getShareAddress() async {
     SharedPreferences sharedPreferences;
-    sharedPreferences=await SharedPreferences.getInstance();
-    address =  sharedPreferences.getString("address");
+    sharedPreferences = await SharedPreferences.getInstance();
+    address = sharedPreferences.getString("address");
     setState(() {});
     return address;
   }
@@ -59,7 +58,6 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
       body: ChangeNotifierProvider(
         create: (context) => viewModel,
         builder: (context, child) => SingleChildScrollView(
-
           child: Column(
             children: [
               SizedBox(
@@ -73,7 +71,8 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                         controller: _screenshotController,
                         child: QrImageView(
                           backgroundColor: Colors.white,
-                          data: "${controllerName.text}Id is :$id date time:${DateTime.now()}",
+                          data:
+                              "${controllerName.text}Id is :$id date time:${DateTime.now()}",
                           size: screenWidth * 0.6,
                         ),
                       ),
@@ -90,7 +89,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                               },
                               style: ElevatedButton.styleFrom(
                                 fixedSize:
-                                    Size(screenWidth * 0.6, screenHight / 15),
+                                    Size(screenWidth * 0.7, screenHight / 15),
                                 backgroundColor: AppColors.primary,
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
@@ -112,7 +111,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                           // Capture the QR code widget as an image
                           viewModel.shareQrCode(_screenshotController);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.share,
                           color: Colors.white,
                         ),
@@ -126,7 +125,6 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-          
                         SizedBox(
                           height: screenHight * 0.13,
                         ),

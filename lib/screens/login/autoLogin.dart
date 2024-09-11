@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:qr_code/screens/Home_page/home_page.dart';
 import 'package:qr_code/screens/admin_panel/admin_servises.dart';
-import 'package:qr_code/screens/login/login_screen.dart';
-import 'package:qr_code/screens/onBoard/onBoardPage.dart';
-import 'package:qr_code/screens/scanQrCode/scanQrCode.dart';
+import 'package:qr_code/screens/onBoardTwo/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../bottom_navigation/bottomNavigation.dart';
+import '../security/scanQrCode/scanQrCode.dart';
 
 class AutoLogin extends StatefulWidget {
   @override
@@ -14,31 +12,32 @@ class AutoLogin extends StatefulWidget {
 }
 
 class _AutoLoginState extends State<AutoLogin> {
- late SharedPreferences sharedPreferences;
+  late SharedPreferences sharedPreferences;
 
-  bool isLogin=false;
-  bool isAdmin=false;
-  bool isSecurity=false;
+  bool isLogin = false;
+  bool isAdmin = false;
+  bool isSecurity = false;
 
- checkUserLogin()async{
-   sharedPreferences=await SharedPreferences.getInstance();
-   if(sharedPreferences.getString("Id")!=null){
-setState(() {
-  isLogin=true;
-});
-   } if(sharedPreferences.getBool('isAdmin')==true){
-     setState(() {
-       isAdmin=true;
-     });
-   }
-   if(sharedPreferences.getBool('is security')==true){
-     setState(() {
-       isAdmin=true;
-     });
-   }
+  checkUserLogin() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString("Id") != null) {
+      setState(() {
+        isLogin = true;
+      });
+    }
+    if (sharedPreferences.getBool('isAdmin') == true) {
+      setState(() {
+        isAdmin = true;
+      });
+    }
+    if (sharedPreferences.getBool('is security') == true) {
+      setState(() {
+        isAdmin = true;
+      });
+    }
+  }
 
- }
- @override
+  @override
   void initState() {
     checkUserLogin();
     // TODO: implement initState
@@ -47,10 +46,12 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
-    return  isAdmin?AdminServices():isLogin? BottomNav():
-    isSecurity?QRScanPage(): OnBoardPage();
+    return isAdmin
+        ? AdminServices()
+        : isLogin
+            ? const BottomNav()
+            : isSecurity
+                ? QRScanPage()
+                : const OnBoard();
   }
-
-
-
 }

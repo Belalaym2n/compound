@@ -1,21 +1,15 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code/screens/Home_page/home_page.dart';
-import 'package:qr_code/screens/admin_panel/add_user/add_users.dart';
-import 'package:qr_code/screens/login/autoLogin.dart';
-import 'package:qr_code/screens/login/login_screen.dart';
-import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_code/utils/app_images.dart';
-
-import '../onBoard/onBoardPage.dart';
+import 'package:qr_code/utils/routes.dart';
 
 class AnimatedSplashScreen extends StatefulWidget {
   @override
   _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
 }
 
-class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with SingleTickerProviderStateMixin {
+class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   bool _isTextVisible = false;
@@ -29,23 +23,22 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(_controller);
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
 
     _controller.forward().then((_) {
       // Delay the start of text animation and show static image
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           _isTextVisible = true;
         });
       });
 
       // Navigate to the next screen after the text animation
-      Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushAndRemoveUntil(
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushNamedAndRemoveUntil(
           context,
-            MaterialPageRoute(builder: (context) => AutoLogin()),
-              (route) => false,
+          AppRoutes.autoLogin,
+          (route) => false,
         );
       });
     });
@@ -56,8 +49,10 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
     _controller.dispose();
     super.dispose();
   }
+
   double screenHeight = 0;
   double screenWidth = 0;
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -66,14 +61,13 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 0,
-        backgroundColor:Colors.white,
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-
         child: Column(
           children: [
-            SizedBox(height: screenHeight*0.14),
+            SizedBox(height: screenHeight * 0.14),
             Center(
               child: Column(
                 children: [
@@ -86,8 +80,12 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                         opacity: _animation,
                         child: ScaleTransition(
                           scale: _animation,
-                          child: Image.asset(AppImages.logoImage,
-                            height: screenHeight*0.57,fit: BoxFit.cover,color: Colors.black,),
+                          child: Image.asset(
+                            AppImages.logoImage,
+                            height: screenHeight * 0.57,
+                            fit: BoxFit.cover,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -96,15 +94,18 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                     children: [
                       Visibility(
                           visible: _isTextVisible,
-                          child: Image.asset(AppImages.logoImage,height:
-                          screenHeight*0.57,fit: BoxFit.cover,color: Colors.black,)
-                      ),
+                          child: Image.asset(
+                            AppImages.logoImage,
+                            height: screenHeight * 0.57,
+                            fit: BoxFit.cover,
+                            color: Colors.black,
+                          )),
                       // SText Animation
 
                       Column(
                         children: [
                           SizedBox(
-                            height: screenHeight*0.38,
+                            height: screenHeight * 0.38,
                           ),
                           Visibility(
                             visible: _isTextVisible,
@@ -113,33 +114,23 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                                 onTap: () {
                                   initState();
                                 },
-
                                 animatedTexts: [
-
-
-                                  TyperAnimatedText("Welcome To Official APP\n         For Compound",
-                                textStyle:  const TextStyle(
-                                    color: Colors.black,fontSize: 23,
-                                    fontWeight: FontWeight.w900),
-
-
-                                                            ),
-
+                                  TyperAnimatedText(
+                                    "Welcome To Official APP\n         For Compound",
+                                    textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: screenWidth * 0.06,
+                                        fontWeight: FontWeight.w900),
+                                  ),
                                 ],
-
                                 totalRepeatCount: 1,
-
                               ),
-                                ),
-                              ),
-
-
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
-
-
                 ],
               ),
             ),

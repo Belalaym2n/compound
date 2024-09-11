@@ -2,7 +2,6 @@ import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewModelQrCodeGenerat extends ChangeNotifier{
 

@@ -1,15 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code/screens/admin_panel/add_user/add_users.dart';
 import 'package:qr_code/screens/admin_panel/admin_servises.dart';
 import 'package:qr_code/screens/admin_panel/getAllUsers/allUsersMessage.dart';
 import 'package:qr_code/screens/for_sale/add/for_sale.dart';
 import 'package:qr_code/screens/login/autoLogin.dart';
-import 'package:qr_code/screens/notification_screen/notification_screen.dart';
-import 'package:qr_code/screens/onBoard/onBoardPage.dart';
+import 'package:qr_code/screens/login/login_screen.dart';
 
+import '../screens/bottom_navigation/bottomNavigation.dart';
 import '../screens/generateQRCode/creatQrCode.dart';
-import '../screens/scanQrCode/scanQrCode.dart';
+import '../screens/onBoardTwo/home_page.dart';
+import '../screens/security/scanQrCode/scanQrCode.dart';
 import '../screens/splash_screen/splash_screen.dart';
 
 class AppRoutes {
@@ -19,11 +19,14 @@ class AppRoutes {
   static const String allUserSent = '/sfs';
   static const String splash = '/';
   static const String autoLogin = 'auto';
+  static const String login = 'login screen';
+  static const String homePage = '/sf';
   static const String forSale = 'for';
   static const String videoCall = 'video';
   static const String onBoard = 'onBoard';
   static const String notification = 'notifcation';
   static const String scanQrCode = '/scan';
+  static const String bottomNavigate = '/scan';
 }
 
 class Routes {
@@ -33,23 +36,33 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const AddUsers(),
         );
+      case AppRoutes.bottomNavigate:
+        return MaterialPageRoute(
+          builder: (context) => const BottomNav(),
+        );
+      case AppRoutes.login:
+        return MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        );
       case AppRoutes.notification:
-        // return MaterialPageRoute(
-        //   builder: (context) =>  NotificationScreen(),
-        // );
+      // return MaterialPageRoute(
+      //   builder: (context) =>  NotificationScreen(),
+      // );
       case AppRoutes.scanQrCode:
         return MaterialPageRoute(
           builder: (context) => QRScanPage(),
         );
-      case AppRoutes.addUser:
+      case AppRoutes.autoLogin:
         return MaterialPageRoute(
           builder: (context) => AutoLogin(),
         );
-      case AppRoutes.onBoard:
+
+      case AppRoutes.homePage:
         return MaterialPageRoute(
-          builder: (context) => const OnBoardPage(),
+          builder: (context) => OnBoard(),
         );
-        ///
+
+      ///
       case AppRoutes.forSale:
         return MaterialPageRoute(
           builder: (context) => const ForSale(),
