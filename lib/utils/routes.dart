@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code/screens/admin_panel/add_user/add_users.dart';
-import 'package:qr_code/screens/admin_panel/admin_servises.dart';
-import 'package:qr_code/screens/admin_panel/getAllUsers/allUsersMessage.dart';
-import 'package:qr_code/screens/for_sale/add/for_sale.dart';
-import 'package:qr_code/screens/login/autoLogin.dart';
-import 'package:qr_code/screens/login/login_screen.dart';
 
-import '../screens/bottom_navigation/bottomNavigation.dart';
-import '../screens/generateQRCode/creatQrCode.dart';
-import '../screens/onBoardTwo/home_page.dart';
-import '../screens/security/scanQrCode/scanQrCode.dart';
-import '../screens/splash_screen/splash_screen.dart';
+import '../screens/common_screen/Register/login/autoLogin.dart';
+import '../screens/common_screen/Register/login/login_screen.dart';
+import '../screens/common_screen/Register/sign_up/register_screen.dart';
+import '../screens/common_screen/onBoardTwo/home_page.dart';
+import '../screens/common_screen/splash_screen/splash_screen.dart';
+import '../screens/screensForUser/bottom_navigation/bottomNavigation.dart';
+import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
+import '../screens/screens_for_admin/add_for_rent/for_rent.dart';
+import '../screens/screens_for_admin/add_user/add_users.dart';
+import '../screens/screens_for_admin/admin_servises.dart';
+import '../screens/screens_for_admin/getAllUsers/allUsersMessage.dart';
+import '../screens/screens_for_ssecurity/scanQrCode/scanQrCode.dart';
 
 class AppRoutes {
   static const String addUser = 'add';
   static const String adminService = '/sda';
-  static const String generateQr = 'generatt';
+  static const String generateQr = 'generate';
+  static const String register = 'register';
   static const String allUserSent = '/sfs';
   static const String splash = '/';
   static const String autoLogin = 'auto';
@@ -24,7 +26,7 @@ class AppRoutes {
   static const String forSale = 'for';
   static const String videoCall = 'video';
   static const String onBoard = 'onBoard';
-  static const String notification = 'notifcation';
+  static const String notification = 'notification';
   static const String scanQrCode = '/scan';
   static const String bottomNavigate = '/scan';
 }
@@ -44,22 +46,26 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
         );
+      case AppRoutes.register:
+        return MaterialPageRoute(
+          builder: (context) => RegisterScreen(),
+        );
       case AppRoutes.notification:
       // return MaterialPageRoute(
       //   builder: (context) =>  NotificationScreen(),
       // );
       case AppRoutes.scanQrCode:
         return MaterialPageRoute(
-          builder: (context) => QRScanPage(),
+          builder: (context) => const QRScanPage(),
         );
       case AppRoutes.autoLogin:
         return MaterialPageRoute(
-          builder: (context) => AutoLogin(),
+          builder: (context) => const AutoLogin(),
         );
 
       case AppRoutes.homePage:
         return MaterialPageRoute(
-          builder: (context) => OnBoard(),
+          builder: (context) => const OnBoard(),
         );
 
       ///
@@ -69,19 +75,19 @@ class Routes {
         );
       case AppRoutes.splash:
         return MaterialPageRoute(
-          builder: (context) => AnimatedSplashScreen(),
+          builder: (context) => const AnimatedSplashScreen(),
         );
       case AppRoutes.allUserSent:
         return MaterialPageRoute(
-          builder: (context) => AllUsersSentMessage(),
+          builder: (context) => const AllUsersSentMessage(),
         );
       case AppRoutes.adminService:
         return MaterialPageRoute(
-          builder: (context) => AdminServices(),
+          builder: (context) => const AdminServices(),
         );
       case AppRoutes.generateQr:
         return MaterialPageRoute(
-          builder: (context) => GeneratQrCode(),
+          builder: (context) => const GeneratQrCode(),
         );
       default:
         return MaterialPageRoute(

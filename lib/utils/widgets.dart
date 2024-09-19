@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:qr_code/utils/app_colors.dart';
-import 'package:qr_code/utils/app_images.dart';
 
 Widget customTitle(String title, double screenWidth) {
   return Text(
@@ -46,16 +43,20 @@ Widget customFormField(
           child: Padding(
             padding: EdgeInsets.only(right: screenWidth / 12),
             child: TextFormField(
+              style: TextStyle(
+                fontSize: screenWidth * 0.03, // Set the font size here
+                color: Colors.black, // Optional: set text color
+              ),
               controller: controller,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: screenHeight / 35,
-                ),
-                border: InputBorder.none,
-                hintText: hintText,
-              ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: screenHeight / 35,
+                  ),
+                  border: InputBorder.none,
+                  hintText: hintText,
+                  hintStyle: TextStyle(fontSize: screenWidth * 0.025)),
               //minLines: 1, // لتحديد الحد الأدنى للارتفاع
-           //  maxLines: null,
+              //  maxLines: null,
               obscureText: obscureText,
             ),
           ),
@@ -65,9 +66,11 @@ Widget customFormField(
   );
 }
 
-gotToChat({required double screenWidth,
-  required Function function,
-  required double screenHeight, required String? userid}) {
+gotToChat(
+    {required double screenWidth,
+    required Function function,
+    required double screenHeight,
+    required String? userid}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: InkWell(
@@ -76,9 +79,9 @@ gotToChat({required double screenWidth,
       },
       child: Column(
         children: [
-SizedBox(
-  height:screenHeight*0.026,
-),
+          SizedBox(
+            height: screenHeight * 0.026,
+          ),
           Container(
             width: screenWidth,
             height: screenHeight * 0.09,
@@ -92,16 +95,17 @@ SizedBox(
             child: Center(
               child: Row(
                 children: [
-          SizedBox(
-            width: screenWidth*0.04,
-          ),
+                  SizedBox(
+                    width: screenWidth * 0.04,
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: Icon(
+                        Icons.person,
+                        size: screenWidth * 0.14,
                       ),
-                      child:Icon(Icons.person, size: screenWidth*0.14,),
                     ),
                   ),
                   SizedBox(
@@ -127,11 +131,9 @@ SizedBox(
                             fontSize: screenWidth * 0.03,
                             fontWeight: FontWeight.w600),
                       ),
-
                     ],
                   ),
-                  Spacer(),
-
+                  const Spacer(),
                 ],
               ),
             ),

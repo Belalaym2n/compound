@@ -23,7 +23,7 @@ class OnBoardModel {
             ' Connect directly with our admin team for quick assistance, support, or answers to your questions. We re here to help!'),
     OnBoardModel(
         imageUrl: AppImages.qrImage3,
-        headline: 'Check sales in compound',
+        headline: 'Check sales',
         description:
             'Explore apartments for sale in our exclusive compound: Discover modern, stylish units within a secure, well-equipped community'),
   ];

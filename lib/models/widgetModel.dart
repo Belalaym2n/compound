@@ -1,4 +1,4 @@
-// import 'package:qr_code/screens/admin_panel/widget.dart';
+// import 'package:qr_code/screens/admin_panel/widget_register.dart';
 //
 // class Widgetmodel{
 //   List items=[

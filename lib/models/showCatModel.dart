@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../screens/chat/chat_screen.dart';
-import '../screens/for_sale/get_all_forRent/getAllAdv.dart';
-import '../screens/generateQRCode/creatQrCode.dart';
-import '../screens/notification_screen/getAllNotifcation.dart';
+import '../screens/common_screen/chat/chat_screen.dart';
+import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
+import '../screens/screensForUser/get_all_forRent/get_all_for_rent.dart';
+import '../screens/screensForUser/notification_screen/getAllNotifcation.dart';
 import '../utils/app_images.dart';
 
 class ShowCatModel {
@@ -48,7 +48,7 @@ class ShowCatModel {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GeneratQrCode(),
+                  builder: (context) => const GeneratQrCode(),
                 ));
           }),
       ShowCatModel(

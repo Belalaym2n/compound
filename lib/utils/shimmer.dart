@@ -12,7 +12,7 @@ Widget shimmerEffect_advs({
     child: Container(
       height: height,
       width: width,
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -33,7 +33,7 @@ Widget shimmerEffect_advs({
                   borderRadius: BorderRadius.circular(12),
                 ),
               )),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           // Placeholder for the title text
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
@@ -44,7 +44,7 @@ Widget shimmerEffect_advs({
               color: Colors.grey[300],
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           // Placeholder for the description text
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

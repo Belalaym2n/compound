@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:qr_code/screens/notification_screen/notification_screen.dart';
+import 'package:qr_code/screens/screensForUser/notification_screen/notification_screen.dart';
 import 'package:qr_code/utils/routes.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 
@@ -16,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     const MyApp(),
   );
