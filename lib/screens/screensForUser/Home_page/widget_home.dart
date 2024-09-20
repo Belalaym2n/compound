@@ -125,10 +125,14 @@ products({
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(12),
+          ),
           margin: const EdgeInsets.only(left: 12, top: 16, right: 12),
           child: Material(
             borderRadius: BorderRadius.circular(12),
-            elevation: 30,
+            // elevation: 30,
             //shadowColor: AppColors.primary,
             child: Container(
               width: screenWidth,
@@ -145,9 +149,9 @@ products({
                       decoration: const ShapeDecoration(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
+                              //topLeft: Radius.circular(15),
+                              //topRight: Radius.circular(15),
+                              ),
                         ),
                       ),
                       child: CachedNetworkImage(

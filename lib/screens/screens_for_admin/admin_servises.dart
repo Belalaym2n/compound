@@ -53,14 +53,6 @@ class _AdminServicesState extends State<AdminServices>
             itemWidger(
                 image: AppImages.addUser,
                 functionNavigate: () {
-                  Navigator.of(context).pushNamed(AppRoutes.addUser);
-                },
-                screenHeight: screenHeight * 0.1,
-                text: 'Add User',
-                screenWidth: screenWidth),
-            itemWidger(
-                image: AppImages.addUser,
-                functionNavigate: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const AllUsersSentMessage(),
                   ));

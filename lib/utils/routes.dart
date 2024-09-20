@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code/screens/screensForUser/customer_services/customer_services_screen.dart';
 
 import '../screens/common_screen/Register/login/autoLogin.dart';
 import '../screens/common_screen/Register/login/login_screen.dart';
@@ -8,16 +9,15 @@ import '../screens/common_screen/splash_screen/splash_screen.dart';
 import '../screens/screensForUser/bottom_navigation/bottomNavigation.dart';
 import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
 import '../screens/screens_for_admin/add_for_rent/for_rent.dart';
-import '../screens/screens_for_admin/add_user/add_users.dart';
 import '../screens/screens_for_admin/admin_servises.dart';
 import '../screens/screens_for_admin/getAllUsers/allUsersMessage.dart';
 import '../screens/screens_for_ssecurity/scanQrCode/scanQrCode.dart';
 
 class AppRoutes {
-  static const String addUser = 'add';
   static const String adminService = '/sda';
   static const String generateQr = 'generate';
   static const String register = 'register';
+  static const String customer = 'customer';
   static const String allUserSent = '/sfs';
   static const String splash = '/';
   static const String autoLogin = 'auto';
@@ -34,10 +34,6 @@ class AppRoutes {
 class Routes {
   static Route onGenerate(RouteSettings settings) {
     switch (settings.name) {
-      case AppRoutes.addUser:
-        return MaterialPageRoute(
-          builder: (context) => const AddUsers(),
-        );
       case AppRoutes.bottomNavigate:
         return MaterialPageRoute(
           builder: (context) => const BottomNav(),
@@ -45,6 +41,10 @@ class Routes {
       case AppRoutes.login:
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
+        );
+      case AppRoutes.customer:
+        return MaterialPageRoute(
+          builder: (context) => const CustomerServicesScreen(),
         );
       case AppRoutes.register:
         return MaterialPageRoute(

@@ -33,7 +33,7 @@ class _BottomNavState extends State<BottomNav> {
 
   getUser() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    name = sharedPreferences?.getString("Id");
+    name = sharedPreferences?.getString("name");
     setState(() {});
     return name;
   }

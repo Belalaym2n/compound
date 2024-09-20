@@ -54,7 +54,7 @@ Widget customFormField(
                   ),
                   border: InputBorder.none,
                   hintText: hintText,
-                  hintStyle: TextStyle(fontSize: screenWidth * 0.025)),
+                  hintStyle: TextStyle(fontSize: screenWidth * 0.03)),
               //minLines: 1, // لتحديد الحد الأدنى للارتفاع
               //  maxLines: null,
               obscureText: obscureText,

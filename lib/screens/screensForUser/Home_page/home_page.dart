@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/notification_model.dart';
 import '../../../utils/shimmer.dart';
+import '../drawer_screen/drawer_screen.dart';
 import '../get_all_forRent/get_all_for_rent.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,9 +30,8 @@ class _HomePageState extends State<HomePage> {
 
   getUser() async {
     sharedPreferences = await SharedPreferences.getInstance();
-
     setState(() {
-      name = sharedPreferences?.getString("Id");
+      name = sharedPreferences?.getString("name");
     });
     return name;
   }
@@ -107,174 +107,182 @@ class _HomePageState extends State<HomePage> {
 
     return ChangeNotifierProvider(
       create: (context) => viewModelHome,
-      builder: (context, child) => Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 0,
-          ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: screenWidth * 0.3,
-                      ),
-                      Center(
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          'Welcome $name',
-                          style: TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w600,
-                              fontSize: screenWidth * 0.05),
+      builder: (context, child) => SafeArea(
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: Text(
+                textAlign: TextAlign.center,
+                'Welcome $name',
+                style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: screenWidth * 0.05),
+              ),
+            ),
+            drawer: Drawer(
+              width: screenWidth * 0.7,
+              child: DrawerScreen(),
+            ),
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: screenWidth * 0.3,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                showImages(),
-                SizedBox(
-                  height: screenHeight * 0.00,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'All Service',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: AppColors.primary,
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.w700),
+                  showImages(),
+                  SizedBox(
+                    height: screenHeight * 0.00,
                   ),
-                ),
-                catItem(ShowCatModel.getData(context, name: name.toString())),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'For Rent',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: screenWidth * 0.05,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const GetAllAdv(),
-                              ));
-                        },
-                        child: Text(
-                          'See ALL',
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'All Service',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  catItem(ShowCatModel.getData(context, name: name.toString())),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'For Rent',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.03,
-                              fontWeight: FontWeight.w600),
+                              color: AppColors.primary,
+                              fontSize: screenWidth * 0.05,
+                              fontWeight: FontWeight.w700),
                         ),
-                      ),
-                    ],
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const GetAllAdv(),
+                                ));
+                          },
+                          child: Text(
+                            'See ALL',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: screenWidth * 0.03,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.26,
-                  child: FutureBuilder(
-                      future: viewModelHome.getAllAdV(),
+                  SizedBox(
+                    height: screenHeight * 0.26,
+                    child: FutureBuilder(
+                        future: viewModelHome.getAllAdV(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 4,
+                              // Number of shimmer placeholders
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 7, vertical: 14),
+                                  child: shimmerEffect_advs(
+                                    height: screenHeight * 0.25,
+                                    width: screenWidth * 0.5,
+                                  ),
+                                );
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            // print(snapshot.error.toString());
+                            return Center(
+                                child: Text(
+                                    'Error: ${snapshot.error}')); // Error handling
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.docs.isEmpty) {
+                            return const Center(
+                                child: Text(
+                                    'No ADV found')); // Empty list handling
+                          } else {
+                            final Advs = snapshot.data!.docs;
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: Advs.length,
+                              itemBuilder: (context, index) {
+                                final advs = Advs[index];
+
+                                return SizedBox(
+                                  width: screenWidth * 0.5,
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 0),
+                                      child: products(
+                                          tittle: advs['tittle'].toString(),
+                                          description:
+                                              advs['description'].toString(),
+                                          imageUrl: advs['image'],
+                                          context: context,
+                                          screenHeight: screenHeight,
+                                          screenWidth: screenWidth)),
+                                );
+                              },
+                            );
+                          }
+                        }),
+                  ),
+                  FutureBuilder<List<NotificationModel>>(
+                      future: NotificationService.getLastNotifications(),
+                      // Call your getNotifications function
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 4, // Number of shimmer placeholders
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 7, vertical: 14),
-                                child: shimmerEffect_advs(
-                                  height: screenHeight * 0.25,
-                                  width: screenWidth * 0.5,
-                                ),
-                              );
-                            },
-                          );
+                          return notification_not_exist_shimmer(
+                              height: screenHeight * 0.12,
+                              width: screenWidth); // Loading indicator
                         } else if (snapshot.hasError) {
                           // print(snapshot.error.toString());
                           return Center(
                               child: Text(
                                   'Error: ${snapshot.error}')); // Error handling
                         } else if (!snapshot.hasData ||
-                            snapshot.data!.docs.isEmpty) {
-                          return const Center(
-                              child:
-                                  Text('No ADV found')); // Empty list handling
-                        } else {
-                          final Advs = snapshot.data!.docs;
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: Advs.length,
-                            itemBuilder: (context, index) {
-                              final advs = Advs[index];
+                            snapshot.data!.isEmpty) {
+                          return notification_not_exist();
 
-                              return SizedBox(
-                                width: screenWidth * 0.5,
-                                child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 0),
-                                    child: products(
-                                        tittle: advs['tittle'].toString(),
-                                        description:
-                                            advs['description'].toString(),
-                                        imageUrl: advs['image'],
-                                        context: context,
-                                        screenHeight: screenHeight,
-                                        screenWidth: screenWidth)),
-                              );
-                            },
-                          );
+                          //notification_not_exist(); // Empty list handling
+                        } else {
+                          final notifications = snapshot.data!;
+
+                          return notificationItem(
+                              context: context,
+                              screenHeight: screenHeight,
+                              screenWidth: screenWidth,
+                              tittle: notifications[0].tittle.toString(),
+                              description: notifications[0].description,
+                              imageUrl: notifications[0].image);
                         }
                       }),
-                ),
-                FutureBuilder<List<NotificationModel>>(
-                    future: NotificationService.getLastNotifications(),
-                    // Call your getNotifications function
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return notification_not_exist_shimmer(
-                            height: screenHeight * 0.12,
-                            width: screenWidth); // Loading indicator
-                      } else if (snapshot.hasError) {
-                        // print(snapshot.error.toString());
-                        return Center(
-                            child: Text(
-                                'Error: ${snapshot.error}')); // Error handling
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return notification_not_exist();
-
-                        //notification_not_exist(); // Empty list handling
-                      } else {
-                        final notifications = snapshot.data!;
-
-                        return notificationItem(
-                            context: context,
-                            screenHeight: screenHeight,
-                            screenWidth: screenWidth,
-                            tittle: notifications[0].tittle.toString(),
-                            description: notifications[0].description,
-                            imageUrl: notifications[0].image);
-                      }
-                    }),
-              ],
-            ),
-          )),
+                ],
+              ),
+            )),
+      ),
     );
   }
 

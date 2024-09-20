@@ -22,7 +22,7 @@ class _AutoLoginState extends State<AutoLogin> {
 
   checkUserLogin() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getString("Id") != null) {
+    if (sharedPreferences.getString("name") != null) {
       setState(() {
         isLogin = true;
       });

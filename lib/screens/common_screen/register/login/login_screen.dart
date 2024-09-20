@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code/screens/common_screen/Register/login/login_connector.dart';
 import 'package:qr_code/screens/common_screen/Register/login/view_model_login.dart';
-import 'package:qr_code/utils/app_colors.dart';
-import 'package:qr_code/utils/routes.dart';
-import 'package:qr_code/utils/widgets.dart';
 
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/routes.dart';
+import '../../../../utils/widgets.dart';
 import '../widget_register.dart';
+import 'login_connector.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,14 +20,14 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   double screenWidth = 0;
   var iDController = TextEditingController();
   var passwordController = TextEditingController();
-  ViewModelLogin viewModel = ViewModelLogin();
+  ViewModelLogin viewModelLogin = ViewModelLogin();
   bool isLogin = false;
 
   bool isLoading = false;
 
   @override
   void initState() {
-    viewModel.loginConnector = this;
+    viewModelLogin.loginConnector = this;
     // TODO: implement initState
     super.initState();
   }
@@ -38,11 +38,15 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (context) => viewModel,
+        create: (context) => viewModelLogin,
         builder: (context, child) => SingleChildScrollView(
           child: Column(
             children: [
-              showLogo(screenWidth: screenWidth, screenHeight: screenHeight),
+              showLogo(
+                          
+                  screenWidth: screenWidth,
+                  name: 'Login',
+                  screenHeight: screenHeight),
               SizedBox(
                 height: screenHeight * 0.08,
               ),
@@ -114,8 +118,10 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
           onPressed: () async {
             String id = iDController.text.trim();
             String password = passwordController.text.trim();
-            viewModel.checkUserExist(
-                id: id, password: password, context: context);
+            viewModelLogin.login(
+                emailController: id,
+                passwordController: password,
+                context: context);
             setState(() {
               isLogin = true;
             });

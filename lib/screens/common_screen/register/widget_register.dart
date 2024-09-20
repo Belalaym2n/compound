@@ -6,6 +6,7 @@ import '../../../utils/app_images.dart';
 Widget showLogo({
   required double screenHeight,
   required double screenWidth,
+  required String name,
 }) =>
     Container(
       height: screenHeight / 2.5,
@@ -35,7 +36,7 @@ Widget showLogo({
                   height: screenHeight * 0.18,
                 ),
                 Text(
-                  "Login",
+                  "$name",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: screenWidth / 14,
