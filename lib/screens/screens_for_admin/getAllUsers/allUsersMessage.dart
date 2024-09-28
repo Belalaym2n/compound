@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/app_images.dart';
-import '../../common_screen/chat/chat_screen.dart';
 import 'getAllUsersViewModel.dart';
 
 class AllUsersSentMessage extends StatefulWidget {
@@ -75,16 +74,7 @@ class _AllUsersSentMessageState extends State<AllUsersSentMessage> {
                                 screenWidth: screenWidth,
                                 screenHeight: screenHeight,
                                 userid: name[index].toString(),
-                                function: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ChatScreen(
-                                          id: name[index],
-                                          senderId: 'admin',
-                                        ),
-                                      ));
-                                }));
+                                function: () {}));
                       },
                     );
                   })),
@@ -205,8 +195,6 @@ class _AllUsersSentMessageState extends State<AllUsersSentMessage> {
                   height: screenHeight * 0.05,
                   child: Expanded(
                     child: TextFormField(
-                      controller: controller,
-
                       decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.search),
                           //filled: true,

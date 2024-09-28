@@ -1,4 +1,4 @@
-import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
+// import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qr_code/utils/shared_pref.dart';
@@ -12,14 +12,13 @@ class ViewModelQrCodeGenerat extends ChangeNotifier {
     final uint8List = imageUint8List;
 
     if (imageUint8List != null) {
-      // Share the image via WhatsApp
-      await Share.file(
-        'QR Code',
-        'qr_code.png',
-        uint8List!.buffer.asUint8List(),
-        'image/png',
-        text: 'Check out this QR code!',
-      );
+      // await Share.file(
+      //   'QR Code',
+      //   'qr_code.png',
+      //   uint8List!.buffer.asUint8List(),
+      //   'image/png',
+      //   text: 'Check out this QR code!',
+      // );
     }
   }
 

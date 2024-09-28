@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/screensForUser/get_all_forRent/rent_connector.dart';
 import 'package:qr_code/screens/screensForUser/get_all_forRent/rent_details.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import 'for_rent_view_model.dart';
 
@@ -16,26 +15,7 @@ class GetAllAdv extends StatefulWidget {
 class _GetAllAdvState extends State<GetAllAdv> implements RentConnector {
   @override
   loading() {
-    Expanded(
-      child: GridView.builder(
-        shrinkWrap: true,
-        itemCount: 10,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: (192 / 220),
-            crossAxisCount: 2,
-            mainAxisSpacing: 2,
-            crossAxisSpacing: 2),
-        itemBuilder: (context, index) {
-          return Skeletonizer(
-              child: products(
-                  context: context,
-                  tittle: "advs['tittle'].toString()",
-                  description: "advs['description'].toString()",
-                  imageUrl:
-                      "https://th.bing.com/th/id/OIP.thxvwuvNfiwNZCL1m79IxgHaEb?w=306&h=183&c=7&r=0&o=5&dpr=1.4&pid=1.7"));
-        },
-      ),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 
   @override
@@ -52,6 +32,7 @@ class _GetAllAdvState extends State<GetAllAdv> implements RentConnector {
 
   ForRentViewModel viewModel = ForRentViewModel();
 
+  @override
   @override
   void initState() {
     viewModel.connector = this;

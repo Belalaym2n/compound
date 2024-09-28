@@ -6,6 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../shared/remote/notification_api.dart';
 import '../../../utils/shared_pref.dart';
 
 class GeneratQrCode extends StatefulWidget {
@@ -150,6 +151,9 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                                   setState(() {
                                     viewModel.qrTracking(count: count);
                                   });
+                                  ApiNotification apiNotification =
+                                      ApiNotification();
+                                  apiNotification.fetchNotifications("service");
                                 },
                                 style: ElevatedButton.styleFrom(
                                   fixedSize:

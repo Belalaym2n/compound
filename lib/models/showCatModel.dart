@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../screens/common_screen/chat/chat_screen.dart';
 import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
 import '../screens/screensForUser/get_all_forRent/get_all_for_rent.dart';
 import '../screens/screensForUser/notification_screen/getAllNotifcation.dart';
@@ -20,17 +19,7 @@ class ShowCatModel {
 
   static getData(BuildContext context, {required String name}) {
     List<ShowCatModel> data = [
-      ShowCatModel(
-          image: AppImages.cat3,
-          text: 'chat',
-          function: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                      id: name.toString(), senderId: name.toString()),
-                ));
-          }),
+      ShowCatModel(image: AppImages.cat3, text: 'chat', function: () {}),
       ShowCatModel(
           image: AppImages.cat2,
           text: 'Notification',

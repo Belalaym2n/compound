@@ -1,6 +1,4 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qr_code/screens/screensForUser/notification_screen/notification_screen.dart';
@@ -20,10 +18,7 @@ void main() async {
   );
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
-    ),
+    MyApp(),
   );
 }
 

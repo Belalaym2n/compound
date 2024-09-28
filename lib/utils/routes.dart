@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/screens/screensForUser/customer_services/customer_services_screen.dart';
+import 'package:qr_code/screens/screensForUser/stores/stores_screen.dart';
 
 import '../screens/common_screen/Register/login/autoLogin.dart';
 import '../screens/common_screen/Register/login/login_screen.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String notification = 'notification';
   static const String scanQrCode = '/scan';
   static const String bottomNavigate = '/scan';
+  static const String stores = 'all stores';
 }
 
 class Routes {
@@ -38,13 +40,17 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const BottomNav(),
         );
+      case AppRoutes.stores:
+        return MaterialPageRoute(
+          builder: (context) => StoresScreen(),
+        );
       case AppRoutes.login:
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
         );
       case AppRoutes.customer:
         return MaterialPageRoute(
-          builder: (context) => const CustomerServicesScreen(),
+          builder: (context) => CustomerServicesScreen(),
         );
       case AppRoutes.register:
         return MaterialPageRoute(

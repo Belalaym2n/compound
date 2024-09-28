@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../common_screen/chat/chat_screen.dart';
+import '../../screens_for_admin/notification_order/notifcation_service.dart';
 import '../Home_page/home_page.dart';
 import '../generateQRCode/creatQrCode.dart';
 import '../get_all_forRent/get_all_for_rent.dart';
@@ -22,7 +22,7 @@ class _BottomNavState extends State<BottomNav> {
   late List<Widget> pages;
   late Widget currentPage;
   late HomePage homepage;
-  late ChatScreen chatScreen;
+  late NotificationOrderScreen notificationOrder;
   late GetAllAdv getAllAdv;
 
   //late  Profile profile;
@@ -45,10 +45,12 @@ class _BottomNavState extends State<BottomNav> {
     setState(() {
       homepage = const HomePage();
       notifications = const GetAllNotifications();
-      chatScreen = ChatScreen(id: name ?? '', senderId: name ?? '');
+      notificationOrder = NotificationOrderScreen(
+        externalId: 'service',
+      );
       getAllAdv = const GetAllAdv();
       qrCode = const GeneratQrCode();
-      pages = [homepage, chatScreen, qrCode, getAllAdv, notifications];
+      pages = [homepage, notificationOrder, qrCode, getAllAdv, notifications];
     });
     super.initState();
   }
@@ -57,10 +59,12 @@ class _BottomNavState extends State<BottomNav> {
     await getUser();
     setState(() {
       homepage = const HomePage();
-      chatScreen = ChatScreen(id: name ?? '', senderId: name ?? '');
+      notificationOrder = NotificationOrderScreen(
+        externalId: 'service',
+      );
 
       qrCode = const GeneratQrCode();
-      pages = [homepage, chatScreen, qrCode, getAllAdv, notifications];
+      pages = [homepage, notificationOrder, qrCode, getAllAdv, notifications];
     });
   }
 

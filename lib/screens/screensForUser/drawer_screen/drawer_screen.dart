@@ -12,6 +12,7 @@ class DrawerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       color: Colors.white,
       height: screenHeight,
@@ -25,6 +26,10 @@ class DrawerScreen extends StatelessWidget {
               height: screenHeight * 0.015,
             ),
             customerServices(context),
+            SizedBox(
+              height: screenHeight * 0.015,
+            ),
+            stores_widget(context)
           ],
         ),
       ),
@@ -55,6 +60,31 @@ class DrawerScreen extends StatelessWidget {
         ),
       );
 
+  Widget stores_widget(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.stores);
+        },
+        child: Row(
+          children: [
+            Icon(
+              Icons.admin_panel_settings,
+              color: Colors.red,
+              size: screenWidth * 0.06,
+            ),
+            SizedBox(
+              width: screenWidth * 0.03,
+            ),
+            Text(
+              'All Stores',
+              style: TextStyle(
+                fontSize: screenWidth * 0.05,
+              ),
+            ),
+          ],
+        ));
+  }
+
   Widget customerServices(BuildContext context) => InkWell(
         onTap: () {
           Navigator.pushNamed(context, AppRoutes.customer);
@@ -70,6 +100,7 @@ class DrawerScreen extends StatelessWidget {
               width: screenWidth * 0.03,
             ),
             Text(
+               
               'Customer Services',
               style: TextStyle(
                 fontSize: screenWidth * 0.05,

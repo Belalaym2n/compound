@@ -44,7 +44,8 @@ Widget customFormField(
             padding: EdgeInsets.only(right: screenWidth / 12),
             child: TextFormField(
               style: TextStyle(
-                fontSize: screenWidth * 0.03, // Set the font size here
+                fontSize: screenWidth * 0.04,
+                fontWeight: FontWeight.w700, // Set the font size here
                 color: Colors.black, // Optional: set text color
               ),
               controller: controller,

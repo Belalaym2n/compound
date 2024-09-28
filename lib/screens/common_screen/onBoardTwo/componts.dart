@@ -99,7 +99,7 @@ class SkipBtn extends StatelessWidget {
         splashColor: AppColors.btnBorderColor,
         child: Center(
           child: Text(
-            "Next",
+            "Skip",
             style: TextStyle(
               color: Colors.white,
               fontSize: width * 0.07,

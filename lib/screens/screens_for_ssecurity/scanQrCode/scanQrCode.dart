@@ -15,6 +15,7 @@ class QRScanPage extends StatefulWidget {
 class _QRScanPageState extends State<QRScanPage> implements ScanConnector {
   @override
   void initState() {
+    
     viewmodel.scanConnector = this;
     // TODO: implement initState
     super.initState();
@@ -41,7 +42,7 @@ class _QRScanPageState extends State<QRScanPage> implements ScanConnector {
             style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(AppColors.primary)),
             onPressed: () {
-              viewmodel.scanQRCode(context);
+              // viewmodel.scanQRCode(context);
             },
             child: const Text(
               'Scan QR Code',
