@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code/models/forRentModel.dart';
 
-import '../uploadForFirebaseDatabse.dart';
+import 'uploadForFirebaseDatabse.dart';
 
 class ViewModelForSale extends ChangeNotifier {
   File? _imageFile;

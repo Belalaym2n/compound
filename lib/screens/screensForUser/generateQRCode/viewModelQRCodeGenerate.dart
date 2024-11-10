@@ -3,22 +3,18 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewModelQrCodeGenerat extends ChangeNotifier {
   String? name;
 
-  shareQrCode(ScreenshotController screenshotController) async {
-    final imageUint8List = await screenshotController.capture();
+  shareQrCode(ScreenshotController _screenshotController) async {
+    final imageUint8List = await _screenshotController.capture();
     final uint8List = imageUint8List;
-
     if (imageUint8List != null) {
-      // await Share.file(
-      //   'QR Code',
-      //   'qr_code.png',
-      //   uint8List!.buffer.asUint8List(),
-      //   'image/png',
-      //   text: 'Check out this QR code!',
-      // );
+      await Share.shareXFiles([
+        XFile.fromData(uint8List!.buffer.asUint8List(), mimeType: "image/png")
+      ]);
     }
   }
 

@@ -34,73 +34,63 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => viewModelLogin,
-        builder: (context, child) =>
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  showLogo(
-                      screenWidth: screenWidth,
-                      name: 'Login',
-                      screenHeight: screenHeight),
-                  SizedBox(
-                    height: screenHeight * 0.08,
-                  ),
-                  SizedBox(
-                    height: screenHeight / 20,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.symmetric(horizontal: screenWidth / 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customTitle("Email", screenWidth),
-                        SizedBox(
-                          height: screenHeight / 70,
-                        ),
-                        customFormField(
-                            hintText: "Enter your Email",
-                            iconData: Icons.person,
-                            screenHeight: screenHeight,
-                            screenWidth: screenWidth,
-                            controller: iDController,
-                            obscureText: false),
-                        SizedBox(
-                          height: screenHeight / 50,
-                        ),
-                        customTitle("Password", screenWidth),
-                        SizedBox(
-                          height: screenHeight / 70,
-                        ),
-                        customFormField(
-                            hintText: "Enter your password",
-                            iconData: Icons.lock,
-                            screenHeight: screenHeight,
-                            screenWidth: screenWidth,
-                            controller: passwordController,
-                            obscureText: true),
-                        SizedBox(
-                          height: screenHeight / 20,
-                        ),
-                        login_button(),
-                        registerText()
-                      ],
-                    ),
-                  ),
-                ],
+        builder: (context, child) => SingleChildScrollView(
+          child: Column(
+            children: [
+              showLogo(
+                  screenWidth: screenWidth,
+                  name: 'Login',
+                  screenHeight: screenHeight),
+              SizedBox(
+                height: screenHeight * 0.08,
               ),
-            ),
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.symmetric(horizontal: screenWidth / 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    customTitle("Email", screenWidth),
+                    SizedBox(
+                      height: screenHeight / 70,
+                    ),
+                    customFormField(
+                        hintText: "Enter your Email",
+                        iconData: Icons.person,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        controller: iDController,
+                        obscureText: false),
+                    SizedBox(
+                      height: screenHeight / 50,
+                    ),
+                    customTitle("Password", screenWidth),
+                    SizedBox(
+                      height: screenHeight / 70,
+                    ),
+                    customFormField(
+                        hintText: "Enter your password",
+                        iconData: Icons.lock,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        controller: passwordController,
+                        obscureText: true),
+                    SizedBox(
+                      height: screenHeight / 20,
+                    ),
+                    login_button(),
+                    registerText()
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -111,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
     super.dispose();
   }
 
-  Widget login_button() =>
-      Align(
+  Widget login_button() => Align(
         alignment: Alignment.center,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -120,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
             backgroundColor: AppColors.primary,
             elevation: 10,
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           ),
           onPressed: () async {
             String id = iDController.text.trim();
@@ -136,16 +125,16 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
           },
           child: isLogin
               ? const CircularProgressIndicator(
-            color: Colors.white,
-          )
+                  color: Colors.white,
+                )
               : Text(
-            "Login",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: screenWidth / 15,
-              fontFamily: 'Nexa Bold 650',
-            ),
-          ),
+                  "Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth / 15,
+                    fontFamily: 'Nexa Bold 650',
+                  ),
+                ),
         ),
       );
 
@@ -153,36 +142,35 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
   errorMessage(String error, BuildContext context) {
     return showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            content: Text(error),
-            title: const Text('error'),
-            actions: [
-              ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(
-                        AppColors.primary), // AppColors.primary
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isLogin = false;
-                    });
-                    isLogin = false;
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'OK',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
-          ),
+      builder: (context) => AlertDialog(
+        content: Text(error),
+        title: const Text('error'),
+        actions: [
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(
+                    AppColors.primary), // AppColors.primary
+              ),
+              onPressed: () {
+                setState(() {
+                  isLogin = false;
+                });
+                isLogin = false;
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ),
     );
   }
 
   @override
-  naviget(BuildContext context) {
+  navigateAdmin(BuildContext context) {
     return Navigator.pushNamedAndRemoveUntil(
-        context, AppRoutes.adminService, (route) => false);
+        context, AppRoutes.bottomNavAdmin, (route) => false);
   }
 
   @override
@@ -191,8 +179,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
         context, AppRoutes.bottomNavigate, (route) => false);
   }
 
-  Widget registerText() =>
-      Center(
+  Widget registerText() => Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -213,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginConnector {
       );
 
   @override
-  navigateSecuirty(BuildContext context) {
+  navigateSecurity(BuildContext context) {
     // TODO: implement navigateSecuirty
     Navigator.of(context)
         .pushNamedAndRemoveUntil(AppRoutes.scanQrCode, (route) => false);

@@ -1,143 +1,145 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:qr_code/utils/app_images.dart';
-import 'package:qr_code/utils/routes.dart';
+import 'package:qr_code/screens/common_screen/Register/login/autoLogin.dart';
+import 'package:qr_code/utils/app_colors.dart';
+import 'package:qr_code/utils/constants.dart';
 
-class AnimatedSplashScreen extends StatefulWidget {
-  const AnimatedSplashScreen({super.key});
-
+class SplashScreen extends StatefulWidget {
   @override
-  _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  bool _isTextVisible = false;
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _positionController;
+  late AnimationController _opacityController;
+  late AnimationController _textOpacityController;
+  late Animation<double> _positionAnimation;
+  late Animation<double> _opacityAnimation;
+  late Animation<double> _textOpacityAnimation;
+
+  bool showFinalScreen = false;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    // تأخير للانتقال من الشاشة البيضاء إلى الشاشة الثانية
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        showFinalScreen = true;
+
+        // بدء الرسوم المتحركة للشعار في الشاشة الثانية
+        _positionController.forward();
+        _opacityController.forward();
+      });
+
+      // بدء ظهور النص بعد انتهاء حركة الشعار
+      Timer(Duration(seconds: 2), () {
+        _textOpacityController.forward();
+      });
+    });
+
+    // إعداد الحركة العمودية
+    _positionController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _positionAnimation = Tween<double>(begin: 0, end: 326).animate(
+      CurvedAnimation(parent: _positionController, curve: Curves.easeOut),
+    );
 
-    _controller.forward().then((_) {
-      // Delay the start of text animation and show static image
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _isTextVisible = true;
-        });
-      });
+    // إعداد الشفافية للظهور التدريجي
+    _opacityController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
 
-      // Navigate to the next screen after the text animation
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.autoLogin,
-          (route) => false,
-        );
-      });
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _opacityController, curve: Curves.easeIn),
+    );
+
+    // إعداد الشفافية للنص
+    _textOpacityController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _textOpacityController, curve: Curves.easeIn),
+    );
+
+    // الانتقال إلى الشاشة الرئيسية بعد انتهاء الشاشة الثانية
+    Timer(Duration(seconds: 5), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const AutoLogin()),
+      );
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _positionController.dispose();
+    _opacityController.dispose();
+    _textOpacityController.dispose();
     super.dispose();
   }
 
-  double screenHeight = 0;
-  double screenWidth = 0;
-
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
+    Constants.initSize(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 0,
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: screenHeight * 0.14),
-            Center(
-              child: Column(
-                children: [
-                  // Animated Image
-                  Visibility(
-                    visible: !_isTextVisible,
-                    child: RotationTransition(
-                      turns: _animation,
-                      child: FadeTransition(
-                        opacity: _animation,
-                        child: ScaleTransition(
-                          scale: _animation,
-                          child: Image.asset(
-                            AppImages.logoImage,
-                            height: screenHeight * 0.57,
-                            fit: BoxFit.cover,
-                            color: Colors.black,
+      backgroundColor: showFinalScreen ? AppColors.primary : Colors.white,
+      body: Stack(
+        children: [
+          // الشعار المتحرك في الشاشة الثانية
+          if (showFinalScreen)
+            AnimatedBuilder(
+              animation: _positionController,
+              builder: (context, child) {
+                return Positioned(
+                  bottom: _positionAnimation.value,
+                  left: MediaQuery.of(context).size.width / 2 - 75,
+                  child: FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: Container(
+                      width: Constants.screenWidth * 0.38,
+                      height: Constants.screenHeight * 0.17,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/white.png', // ضع مسار الصورة هنا
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Stack(
-                    children: [
-                      Visibility(
-                          visible: _isTextVisible,
-                          child: Image.asset(
-                            AppImages.logoImage,
-                            height: screenHeight * 0.57,
-                            fit: BoxFit.cover,
-                            color: Colors.black,
-                          )),
-                      // SText Animation
+                );
+              },
+            ),
 
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: screenHeight * 0.38,
-                          ),
-                          Visibility(
-                            visible: _isTextVisible,
-                            child: Center(
-                              child: AnimatedTextKit(
-                                onTap: () {
-                                  initState();
-                                },
-                                animatedTexts: [
-                                  TyperAnimatedText(
-                                    "Welcome To Official APP\n         For Compound",
-                                    textStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: screenWidth * 0.06,
-                                        fontWeight: FontWeight.w900),
-                                  ),
-                                ],
-                                totalRepeatCount: 1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+          // النص المتحرك بتأثير fade in بعد ظهور الشعار
+          if (showFinalScreen)
+            Center(
+              child: FadeTransition(
+                opacity: _textOpacityAnimation,
+                child: Padding(
+                  padding: EdgeInsets.only(top: Constants.screenHeight * 0.18),
+                  child: Text(
+                    "خدمتك بسهوله", // النص الذي تريد عرضه
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Constants.screenWidth * 0.062,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

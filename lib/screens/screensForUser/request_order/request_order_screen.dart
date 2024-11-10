@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code/screens/screensForUser/online_payment/payment_screen.dart';
 import 'package:qr_code/screens/screensForUser/request_order/connector.dart';
 import 'package:qr_code/screens/screensForUser/request_order/request_order_view_model.dart';
 
@@ -47,7 +48,7 @@ class _RequestOrderScreenState extends State<RequestOrderScreen>
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 title: Text(
-                  "${widget.serviceName}",
+                  widget.serviceName,
                   style: TextStyle(
                       fontSize: screenWidth * 0.05,
                       fontWeight: FontWeight.w600),
@@ -69,8 +70,6 @@ class _RequestOrderScreenState extends State<RequestOrderScreen>
       ),
     );
   }
-
-  Text text_app_bar() => const Text("Electirical");
 
   @override
   Widget step_one_content() {
@@ -133,7 +132,7 @@ class _RequestOrderScreenState extends State<RequestOrderScreen>
           style: ButtonStyle(
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(screenWidth * 0.03))),
-              backgroundColor: WidgetStatePropertyAll(Colors.green)),
+              backgroundColor: const WidgetStatePropertyAll(Colors.green)),
           onPressed: () => viewModel.onStepContinue(
             externalID: 'service',
             nameController: nameController,
@@ -149,7 +148,7 @@ class _RequestOrderScreenState extends State<RequestOrderScreen>
             style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.04),
           ),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         ElevatedButton(
           style: ButtonStyle(
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -220,6 +219,108 @@ class _RequestOrderScreenState extends State<RequestOrderScreen>
                       .copyWith(fontSize: 18)))
         ],
       ),
+    );
+  }
+
+  @override
+  final_step_content() {
+    // TODO: implement final_step_content
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "اختر طريقة الدفع",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Card for cash payment
+            GestureDetector(
+              onTap: () {
+                // Add logic for cash payment selection
+              },
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                color: Colors.orangeAccent,
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.money,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "كاش",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Card for Visa payment
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentView(
+                          onPaymentSuccess: () {},
+                          price: 100,
+                          onPaymentError: () {}),
+                    ));
+              },
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                color: Colors.blueAccent,
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.credit_card,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "فيزا",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        )
+      ],
     );
   }
 }

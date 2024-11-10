@@ -13,7 +13,6 @@ class RequestOrderViewModel extends ChangeNotifier {
   int index = 0;
 
   onStepCancel() {
-    print("index $index");
     if (index > 0) {
       index = index - 1;
       notifyListeners();
@@ -33,7 +32,7 @@ class RequestOrderViewModel extends ChangeNotifier {
     );
 
     if (fieldsAreValid) {
-      if (index == 2) {
+      if (index == 3) {
         //Send notification when confirming the order
         await send_notification_for_technical_support(
           externalId: externalID,
@@ -45,10 +44,7 @@ class RequestOrderViewModel extends ChangeNotifier {
             externalId: externalID,
             heading: "New Order",
             order:
-                "name is :${nameController.text} \n Address is :${addressController.text} \n phone is :${phoneController.text}");
-
-        isComplete = true;
-        notifyListeners();
+                " name is :${nameController.text} \n Address is :${addressController.text} \n phone is :${phoneController.text}");
       }
 
       // Move to the next step if it's not the last one
@@ -78,10 +74,10 @@ class RequestOrderViewModel extends ChangeNotifier {
   List<Step> get steps => [
         Step(
             stepStyle: index > 0
-                ? StepStyle(
+                ? const StepStyle(
                     color: Colors.green,
                   )
-                : StepStyle(color: Colors.grey),
+                : const StepStyle(color: Colors.grey),
             isActive: index > 0,
             title: connector.tittleName("Set Data"),
             content: Column(
@@ -98,11 +94,18 @@ class RequestOrderViewModel extends ChangeNotifier {
             )),
         Step(
             stepStyle: index > 2
-                ? StepStyle(color: Colors.green)
-                : StepStyle(color: Colors.grey),
+                ? const StepStyle(color: Colors.green)
+                : const StepStyle(color: Colors.grey),
             isActive: index > 2,
             title: connector.tittleName("Confirmation Order"),
-            content: Column(children: [])),
+            content: const Column(children: [])),
+        Step(
+            stepStyle: index > 3
+                ? const StepStyle(color: Colors.green)
+                : const StepStyle(color: Colors.grey),
+            isActive: index > 2,
+            title: connector.tittleName("payment"),
+            content: connector.final_step_content()),
       ];
 
   send_notification_for_technical_support({
@@ -136,12 +139,14 @@ class RequestOrderViewModel extends ChangeNotifier {
         order: order,
         time: DateUtils.dateOnly(DateTime.now()).toString());
 
-    FirebaseFirestore.instance
+    var collection = FirebaseFirestore.instance
         .collection("Orders")
         .doc(externalId)
-        .collection("Orders")
-        .doc()
-        .set(requestOrder.toJson());
+        .collection("Orders");
+    var docref = collection.doc();
+    requestOrder.id = docref.id;
+
+    docref.set(requestOrder.toJson());
     print("set data for firebase succesufflt");
   }
 }

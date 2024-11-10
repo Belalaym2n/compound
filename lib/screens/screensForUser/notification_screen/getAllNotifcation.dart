@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/utils/app_colors.dart';
+import 'package:qr_code/utils/app_images.dart';
 
 import '../../../models/notification_model.dart';
 import 'notification_screen.dart';
@@ -25,58 +26,70 @@ class _GetAllNotificationsState extends State<GetAllNotifications> {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 0,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 0,
+        ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: screenHeight * 0.02,
+            ),
+            Expanded(
+                child: FutureBuilder<List<NotificationModel>>(
+                    future: NotificationService.getNotifications(),
+                    // Call your getNotifications function
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child:
+                                CircularProgressIndicator()); // Loading indicator
+                      } else if (snapshot.hasError) {
+                        // print(snapshot.error.toString());
+                        return Center(
+                            child: Text(
+                                'Error: ${snapshot.error}')); // Error handling
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                            child: no_notification()); // Empty list handling
+                      } else {
+                        final notifications = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: notifications.length,
+                          itemBuilder: (context, index) {
+                            print("${notifications[index].image}");
+                            final notification = notifications[index];
+                            return notificationItem(
+                                tittle: notification.tittle.toString(),
+                                description: notification.description,
+                                imageUrl: notification.image);
+                          },
+                        );
+                      }
+                    }))
+          ],
+        ),
       ),
-      body: Column(
-        children: [
-          Text(
-            'All Notifications',
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontSize: screenWidth * 0.05),
-          ),
-          SizedBox(
-            height: screenHeight * 0.02,
-          ),
-          Expanded(
-              child: FutureBuilder<List<NotificationModel>>(
-                  future: NotificationService.getNotifications(),
-                  // Call your getNotifications function
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                          child:
-                              CircularProgressIndicator()); // Loading indicator
-                    } else if (snapshot.hasError) {
-                      // print(snapshot.error.toString());
-                      return Center(
-                          child: Text(
-                              'Error: ${snapshot.error}')); // Error handling
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text(
-                              'No notifications  found')); // Empty list handling
-                    } else {
-                      final notifications = snapshot.data!;
-                      return ListView.builder(
-                        itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          print("${notifications[index].image}");
-                          final notification = notifications[index];
-                          return notificationItem(
-                              tittle: notification.tittle.toString(),
-                              description: notification.description,
-                              imageUrl: notification.image);
-                        },
-                      );
-                    }
-                  }))
-        ],
-      ),
+    );
+  }
+
+  Widget no_notification() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          AppImages.noNotification,
+          width: screenWidth * 0.8,
+          height: screenHeight * 0.12,
+        ),
+        Text(
+          "No Notifications!",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: screenWidth * 0.055),
+        ),
+      ],
     );
   }
 

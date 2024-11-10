@@ -35,21 +35,22 @@ class ViewModelLogin extends ChangeNotifier {
           .collection('Owners')
           .doc(userCredential.user?.uid)
           .get();
-
-      String role = userDoc['role'];
-      String name = userDoc['name'];
+//bel
+      String role = await userDoc['role'];
+      String name = await userDoc['name'];
 
       if (role == 'admin') {
         checkUser(value: true, key: 'isAdmin');
         // Navigate to admin screen
-        loginConnector.naviget(context);
+        loginConnector.navigateAdmin(context);
       } else if (role == 'security') {
         checkUser(value: true, key: "is security");
         // Navigate to admin screen
-        loginConnector.navigateSecuirty(context);
+        loginConnector.navigateSecurity(context);
       } else {
         setUserId(value: name, key: 'name');
         loginConnector.navigateUser(context);
+        //be@gmail.com 1234567
         // Navigate to user screen
       }
     } catch (e) {

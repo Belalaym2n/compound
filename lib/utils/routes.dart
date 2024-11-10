@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/screens/screensForUser/customer_services/customer_services_screen.dart';
-import 'package:qr_code/screens/screensForUser/stores/stores_screen.dart';
 
 import '../screens/common_screen/Register/login/autoLogin.dart';
 import '../screens/common_screen/Register/login/login_screen.dart';
 import '../screens/common_screen/Register/sign_up/register_screen.dart';
-import '../screens/common_screen/onBoardTwo/home_page.dart';
+import '../screens/common_screen/onBoard/onBaoar.dart';
 import '../screens/common_screen/splash_screen/splash_screen.dart';
 import '../screens/screensForUser/bottom_navigation/bottomNavigation.dart';
 import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
 import '../screens/screens_for_admin/add_for_rent/for_rent.dart';
-import '../screens/screens_for_admin/admin_servises.dart';
-import '../screens/screens_for_admin/getAllUsers/allUsersMessage.dart';
-import '../screens/screens_for_ssecurity/scanQrCode/scanQrCode.dart';
+import '../screens/screens_for_admin/bottom_navigation_admin/bottom_nav_admin.dart';
+import '../screens/screens_for_admin/orders/notifcation_service.dart';
+import '../screens/screens_for_security/scanQrCode/scanQrCode.dart';
 
 class AppRoutes {
   static const String adminService = '/sda';
   static const String generateQr = 'generate';
   static const String register = 'register';
   static const String customer = 'customer';
-  static const String allUserSent = '/sfs';
+  static const String bottomNavAdmin = 'sdfs/';
+
   static const String splash = '/';
   static const String autoLogin = 'auto';
   static const String login = 'login screen';
   static const String homePage = '/sf';
   static const String forSale = 'for';
-  static const String videoCall = 'video';
-  static const String onBoard = 'onBoard';
+  static const String getOrder = 'sdf/';
+
+  static const String onBoard = '/sfs';
   static const String notification = 'notification';
-  static const String scanQrCode = '/scan';
+  static const String scanQrCode = 'sdfs/';
   static const String bottomNavigate = '/scan';
   static const String stores = 'all stores';
 }
@@ -40,14 +41,16 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const BottomNav(),
         );
-      case AppRoutes.stores:
-        return MaterialPageRoute(
-          builder: (context) => StoresScreen(),
-        );
+
       case AppRoutes.login:
         return MaterialPageRoute(
           builder: (context) => const LoginScreen(),
         );
+      case AppRoutes.bottomNavAdmin:
+        return MaterialPageRoute(
+          builder: (context) => const BottomNavAdmin(),
+        );
+
       case AppRoutes.customer:
         return MaterialPageRoute(
           builder: (context) => CustomerServicesScreen(),
@@ -62,35 +65,38 @@ class Routes {
       // );
       case AppRoutes.scanQrCode:
         return MaterialPageRoute(
-          builder: (context) => const QRScanPage(),
+          builder: (context) => QRScanPage(),
         );
       case AppRoutes.autoLogin:
         return MaterialPageRoute(
           builder: (context) => const AutoLogin(),
+        );
+      case AppRoutes.onBoard:
+        return MaterialPageRoute(
+          builder: (context) => const OnBoard(),
         );
 
       case AppRoutes.homePage:
         return MaterialPageRoute(
           builder: (context) => const OnBoard(),
         );
+      case AppRoutes.getOrder:
+        return MaterialPageRoute(
+          builder: (context) => OrdersScreen(
+            externalId: "service",
+          ),
+        );
 
-      ///
+      ///OrdersScreen
       case AppRoutes.forSale:
         return MaterialPageRoute(
           builder: (context) => const ForSale(),
         );
       case AppRoutes.splash:
         return MaterialPageRoute(
-          builder: (context) => const AnimatedSplashScreen(),
+          builder: (context) => SplashScreen(),
         );
-      case AppRoutes.allUserSent:
-        return MaterialPageRoute(
-          builder: (context) => const AllUsersSentMessage(),
-        );
-      case AppRoutes.adminService:
-        return MaterialPageRoute(
-          builder: (context) => const AdminServices(),
-        );
+
       case AppRoutes.generateQr:
         return MaterialPageRoute(
           builder: (context) => const GeneratQrCode(),

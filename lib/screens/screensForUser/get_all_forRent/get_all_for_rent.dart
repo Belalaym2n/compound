@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code/screens/screensForUser/get_all_forRent/rent_connector.dart';
 import 'package:qr_code/screens/screensForUser/get_all_forRent/rent_details.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'for_rent_view_model.dart';
 
@@ -13,29 +14,12 @@ class GetAllAdv extends StatefulWidget {
 }
 
 class _GetAllAdvState extends State<GetAllAdv> implements RentConnector {
-  @override
-  loading() {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  @override
-  show_data() {
-    // TODO: implement show_data
-    throw UnimplementedError();
-  }
-
-  @override
-  errorMessage(String error, BuildContext context) {
-    // TODO: implement errorMessage
-    return const Center(child: Text('something has wrong'));
-  }
-
   ForRentViewModel viewModel = ForRentViewModel();
 
   @override
-  @override
   void initState() {
     viewModel.connector = this;
+
     // TODO: implement initState
     super.initState();
   }
@@ -47,12 +31,51 @@ class _GetAllAdvState extends State<GetAllAdv> implements RentConnector {
 
     return ChangeNotifierProvider(
       create: (context) => viewModel,
-      builder: (context, child) => SafeArea(
-        child: Scaffold(
-            body: viewModel.getAllForRent(
-                screenHeight: screenHeight, screenWidth: screenWidth)),
+      builder: (context, child) => Consumer<ForRentViewModel>(
+        builder: (context, view, child) => SafeArea(
+          child: Scaffold(
+              body: view.getAllForRent(
+                  screenHeight: screenHeight, screenWidth: screenWidth)),
+        ),
       ),
     );
+  }
+
+  @override
+  show_data() {
+    // TODO: implement show_data
+    throw UnimplementedError();
+  }
+
+  @override
+  loading() {
+    return Padding(
+      padding: const EdgeInsets.all(14.0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: 10,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: (screenWidth / 2.35) / (screenHeight * 0.21),
+            crossAxisCount: 2,
+            mainAxisSpacing: screenHeight * 0.01,
+            crossAxisSpacing: screenWidth * 0.04),
+        itemBuilder: (context, index) {
+          return Skeletonizer(
+              child: products(
+                  context: context,
+                  tittle: "advs['tittle'].toString()",
+                  description: "advs['description'].toString()",
+                  imageUrl:
+                      "https://th.bing.com/th/id/OIP.thxvwuvNfiwNZCL1m79IxgHaEb?w=306&h=183&c=7&r=0&o=5&dpr=1.4&pid=1.7"));
+        },
+      ),
+    );
+  }
+
+  @override
+  errorMessage(String error, BuildContext context) {
+    // TODO: implement errorMessage
+    return const Center(child: Text('something has wrong'));
   }
 
   Widget products(

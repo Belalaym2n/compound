@@ -17,10 +17,10 @@ class OnBoardModel {
         description:
             'Create custom QR codes for your visitors to access information quickly,to improve security in compound'),
     OnBoardModel(
-        imageUrl: AppImages.qrImage2,
-        headline: 'Chat With Admin',
+        imageUrl: AppImages.orderImage,
+        headline: 'Service Order ',
         description:
-            ' Connect directly with our admin team for quick assistance, support, or answers to your questions. We re here to help!'),
+            ' Request for professional assistance for maintenance, repair, or product purchase. Details include service type and specifications for timely fulfillment.'),
     OnBoardModel(
         imageUrl: AppImages.qrImage3,
         headline: 'Check sales',

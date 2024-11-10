@@ -25,7 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen>
   bool isLoading = false;
 
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -119,7 +118,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                   register_button(
                       context: context,
                       password: passwordController.text,
-                      email: emailController.text)
+                      email: emailController.text),
+                  SizedBox(
+                    height: screenHeight / 30,
+                  ),
                 ],
               ),
             ),

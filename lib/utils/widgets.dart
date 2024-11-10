@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/utils/app_colors.dart';
 
+import 'app_images.dart';
+
 Widget customTitle(String title, double screenWidth) {
   return Text(
     title,
@@ -67,79 +69,92 @@ Widget customFormField(
   );
 }
 
-gotToChat(
-    {required double screenWidth,
-    required Function function,
-    required double screenHeight,
-    required String? userid}) {
+Widget storeItem({
+  required double screenWidth,
+  required double screenHeight,
+}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: InkWell(
-      onTap: () {
-        function();
-      },
-      child: Column(
-        children: [
-          SizedBox(
-            height: screenHeight * 0.026,
-          ),
-          Container(
-            width: screenWidth,
-            height: screenHeight * 0.09,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2,
+    child: Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(screenWidth * 0.03),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(screenWidth * 0.03),
+            border: Border.all(color: Colors.black54, width: 1)),
+        height: screenHeight * 0.12,
+        width: screenWidth,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Material(
+                elevation: 5,
+                borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(screenWidth * 0.07),
+                  child: Image.asset(
+                    fit: BoxFit.cover,
+                    AppImages.splashImage,
+                    height: screenHeight * 0.2,
+                    width: screenWidth * 0.3,
+                  ),
                 ),
-                color: Colors.white),
-            child: Center(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: screenWidth * 0.04,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: Icon(
-                        Icons.person,
-                        size: screenWidth * 0.14,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: screenWidth * 0.02,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: screenHeight * 0.01,
-                      ),
-                      Text(
-                        "$userid",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.05,
-                            fontWeight: FontWeight.w800),
-                      ),
-                      Text(
-                        "Online",
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: screenWidth * 0.03,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                ],
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: screenWidth * 0.03,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                Text(
+                  "Super Market",
+                  style: TextStyle(
+                      color: AppColors.lightBlack,
+                      fontWeight: FontWeight.w500,
+                      fontSize: screenWidth * 0.04,
+                      fontStyle: FontStyle.italic),
+                ),
+                Text(
+                  "lamirada market",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: screenWidth * 0.05,
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "+201022491465",
+                      style: TextStyle(
+                          color: AppColors.lightBlack,
+                          fontWeight: FontWeight.w500,
+                          fontSize: screenWidth * 0.04,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    SizedBox(width: screenWidth * 0.04),
+                    Text(
+                      "7am:7pm",
+                      style: TextStyle(
+                          color: AppColors.lightBlack,
+                          fontWeight: FontWeight.w500,
+                          fontSize: screenWidth * 0.04,
+                          fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     ),
   );

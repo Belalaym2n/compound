@@ -1,37 +1,79 @@
 import 'package:flutter/material.dart';
 
 import '../screens/screensForUser/generateQRCode/creatQrCode.dart';
-import '../screens/screensForUser/get_all_forRent/get_all_for_rent.dart';
-import '../screens/screensForUser/notification_screen/getAllNotifcation.dart';
-import '../utils/app_images.dart';
+import '../screens/screensForUser/request_order/request_order_screen.dart';
 
 class ShowCatModel {
   String text;
-  String image;
 
+  IconData iconData;
+  Color colorBackground;
   final VoidCallback function;
 
   ShowCatModel({
-    required this.image,
+    this.iconData = Icons.add,
     required this.text,
     required this.function,
+    required this.colorBackground,
   });
 
-  static getData(BuildContext context, {required String name}) {
+  static getData(BuildContext context) {
     List<ShowCatModel> data = [
-      ShowCatModel(image: AppImages.cat3, text: 'chat', function: () {}),
       ShowCatModel(
-          image: AppImages.cat2,
-          text: 'Notification',
+          colorBackground: Color(0xFF00BFA6),
+          iconData: Icons.format_paint,
+          text: 'Painting',
           function: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const GetAllNotifications(),
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
                 ));
           }),
       ShowCatModel(
-          image: AppImages.cat1,
+          colorBackground: Colors.deepPurple,
+          iconData: Icons.format_paint,
+          text: 'home',
+          function: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
+                ));
+          }),
+      ShowCatModel(
+          colorBackground: Color(0xFF00BFf6),
+          iconData: Icons.format_paint,
+          text: 'Steal',
+          function: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
+                ));
+          }),
+      ShowCatModel(
+          colorBackground: Color(0xFFFFAE35),
+          iconData: Icons.electrical_services,
+          text: 'electrical',
+          function: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
+                ));
+          }),
+      ShowCatModel(
+          colorBackground: Color(0xFFFF2424),
+          iconData: Icons.qr_code_2,
           text: 'QR',
           function: () {
             Navigator.push(
@@ -41,13 +83,42 @@ class ShowCatModel {
                 ));
           }),
       ShowCatModel(
-          image: AppImages.cat4,
-          text: 'rent',
+          colorBackground: Color(0xFF316F5C),
+          iconData: Icons.car_repair_outlined,
+          text: 'repair',
           function: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const GetAllAdv(),
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
+                ));
+          }),
+      ShowCatModel(
+          colorBackground: Color(0xFF00DFA6),
+          iconData: Icons.format_paint,
+          text: 'Room',
+          function: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
+                ));
+          }),
+      ShowCatModel(
+          colorBackground: Color(0xFFCF77F9),
+          iconData: Icons.cleaning_services,
+          text: 'Cleaning',
+          function: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestOrderScreen(
+                    serviceName: 'service',
+                  ),
                 ));
           }),
     ];

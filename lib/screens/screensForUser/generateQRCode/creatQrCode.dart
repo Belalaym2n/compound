@@ -120,6 +120,7 @@ class _ScanQrCodeState extends State<GeneratQrCode> {
                       ),
                     ],
                   ),
+                  //be@gmail.com 1234567
                 ),
               if (controllerName.text.isEmpty)
                 Center(

@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../screensForUser/bottom_navigation/bottomNavigation.dart';
-import '../../../screens_for_admin/admin_servises.dart';
-import '../../../screens_for_ssecurity/scanQrCode/scanQrCode.dart';
-import '../../onBoardTwo/home_page.dart';
+import '../../../screens_for_security/scanQrCode/scanQrCode.dart';
+import '../../onBoard/onBaoar.dart';
 
 class AutoLogin extends StatefulWidget {
   const AutoLogin({super.key});
@@ -34,7 +33,7 @@ class _AutoLoginState extends State<AutoLogin> {
     }
     if (sharedPreferences.getBool('is security') == true) {
       setState(() {
-        isAdmin = true;
+        isSecurity = true;
       });
     }
   }
@@ -49,11 +48,11 @@ class _AutoLoginState extends State<AutoLogin> {
   @override
   Widget build(BuildContext context) {
     return isAdmin
-        ? const AdminServices()
+        ? Container()
         : isLogin
             ? const BottomNav()
             : isSecurity
-                ? const QRScanPage()
+                ? QRScanPage()
                 : const OnBoard();
   }
 }
