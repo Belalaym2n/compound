@@ -1,13 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:qr_code/screens/screensForUser/notification_screen/notification_screen.dart';
+import 'package:qr_code/ui/core/notification_screen/notification_screen.dart';
+import 'package:qr_code/utils/constants.dart';
 import 'package:qr_code/utils/routes.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 
+import 'domain/models/notification_model.dart';
+import 'domain/models/payment_data.dart';
 import 'firebase_options.dart';
-import 'models/notification_model.dart';
-import 'models/payment_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ void main() async {
         "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1Rjek1ESTNMQ0p1WVcxbElqb2lNVGN4TkRJNU1UUTVOaTQ1TURZeE5qSWlmUS45c0dVbm9SMHhHSFNMeUEzNGx2d1VMVHNqWnpHMy1GU2FKZDZtV1hlNi1qa0hnVlpfdWtVRnJaekR3UTJVX1ptaFRjUkZHMjFPV2VCWDVZUk4wVjdFdw==",
     // (Required) getting it from dashboard Select Settings -> Account Info -> API Key
     iframeId: "840790",
+
     integrationCardId: "4562985",
   );
   runApp(
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Constants.initSize(context);
     OneSignal.Notifications.addClickListener(
       (event) {
         final notification = event.notification;

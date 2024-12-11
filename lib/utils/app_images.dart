@@ -13,6 +13,8 @@ class AppImages {
   static const String offer = "${Constants.imageUrl}offer.jpeg";
   static const String orderImage = "${Constants.imageUrl}order-now.png";
   static const String splashImage = "${Constants.imageUrl}mas.jpg";
+  static const String order_detailed =
+      "${Constants.imageUrl}order_detailed.jpg";
   static const String noNotification =
       "${Constants.imageUrl}no notification.png";
 
