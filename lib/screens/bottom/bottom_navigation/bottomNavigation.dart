@@ -37,15 +37,15 @@ class _BottomNavState extends State<BottomNav> {
                 //   color: Colors.white,
                 // ),
                 Icon(
-                  Icons.real_estate_agent,
+                  Icons.notifications_active,
+                  color: Colors.white,
+                ),
+                Icon(
+                  Icons.people_alt_outlined,
                   color: Colors.white,
                 ),
                 Icon(
                   Icons.notifications,
-                  color: Colors.white,
-                ),
-                Icon(
-                  Icons.request_page,
                   color: Colors.white,
                 ),
               ]),

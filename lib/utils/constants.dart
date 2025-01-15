@@ -13,7 +13,7 @@ class Constants {
       'e4e456c1a7e52109c3f05361598149731f15d42fe55697425f68db7d70ae89b7';
   static String oneSignalAppId = "0eda7f4e-c25e-4438-bdb3-4aea23a39541";
   static String oneSignalApiKey =
-      "NWZjMjc2YTMtYjViOC00NTI5LTgyYmEtMDE1OWVkMjAwYzk4";
+      "os_v2_app_b3nh6twclzcdrpntjlvchi4vif2bikctqeve5ln6hl6sqtrwiv3tcfqpw6nverde4xeglg7tap7zrkpn5zajd6vmyfnfwrgyxtoydxi";
   static late double screenHeight;
   static late double screenWidth;
 

@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:qr_code/ui/core/notification_screen/notification_screen.dart';
+import 'package:qr_code/ui/core/notification_screen/widgets/notification_detailed.dart';
 import 'package:qr_code/utils/constants.dart';
 import 'package:qr_code/utils/routes.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 
+import 'data/services/shared_pref_helper.dart';
 import 'domain/models/notification_model.dart';
 import 'domain/models/payment_data.dart';
 import 'firebase_options.dart';
@@ -26,6 +27,9 @@ void main() async {
 
     integrationCardId: "4562985",
   );
+  await SharedPreferencesHelper.init();
+  print("object${SharedPreferencesHelper.compoundName}");
+
   runApp(
     const MyApp(),
   );
@@ -40,26 +44,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Constants.initSize(context);
-    OneSignal.Notifications.addClickListener(
-      (event) {
-        final notification = event.notification;
-        List<NotificationModel> notifications = [
-          NotificationModel(
-              description: notification.body.toString(),
-              tittle: notification.title.toString(),
-              image: notification.bigPicture.toString())
-        ];
-        NotificationService.saveNotifications(notifications);
-        navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (context) => NotificationScreen(
-                tittle: notification.title!,
-                description: notification.body!,
-                imageUrl: notification.bigPicture ?? ''),
+    OneSignal.Notifications.addClickListener((event) {
+      final notification = event.notification;
+      NotificationModel notifications = NotificationModel(
+          date: DateTime.now().toString(),
+          time: DateTime.now().toString(),
+          description: notification.body.toString(),
+          id: notification.notificationId,
+          // timestamp: DateTime.now(),
+          title: notification.title.toString(),
+          imageUrl: notification.bigPicture.toString());
+
+      navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => NotificationDetailed(
+            notificationModel: notifications,
           ),
-        );
-      },
-    );
+        ),
+        (route) =>
+            route.isFirst, // يحتفظ فقط بأول شاشة (الشاشة الأخيرة قبل الإشعار)
+      );
+    });
 
     return MaterialApp(
       navigatorKey: navigatorKey,

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color primary = const Color(0xFF242760);
+  static Color masPrimary = const Color(0xFF312885);
+  static Color masSecondary = const Color(0xFF009fe3);
+  static Color background = const Color(0xFFF5F5F5) // خلفية فاتحة
+      ;
+
+  static Color textPrimary = const Color(0xFF333333);
+
   static const Color titleTextColor = Color(0xFF504e9c);
   static const Color btnColor = Color(0xFF4786ec);
   static const Color btnBorderColor = Color.fromARGB(255, 183, 181, 252);

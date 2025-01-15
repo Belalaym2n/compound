@@ -123,8 +123,8 @@ class _OnBoardScreen extends State<OnBoard> {
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: screenWidth * 0.034),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: screenWidth * 0.03),
                                   textAlign: TextAlign.center,
                                 ),
                               ),

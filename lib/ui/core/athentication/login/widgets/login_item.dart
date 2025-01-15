@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code/utils/constants.dart';
 
 import '../../../../../utils/widgets.dart';
+import '../../../ui/field.dart';
 import '../../../ui/show_logo.dart';
 
 class LoginItem extends StatefulWidget {
@@ -29,6 +30,7 @@ class _LoginItemState extends State<LoginItem> {
         child: Column(
           children: [
             showLogo(
+                shoImage: true,
                 screenWidth: Constants.screenWidth,
                 name: 'Login',
                 screenHeight: Constants.screenHeight),

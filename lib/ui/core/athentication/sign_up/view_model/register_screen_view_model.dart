@@ -1,47 +1,108 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_code/utils/base.dart';
 
+import '../../../../../data/repositires/auth/creat_account.dart';
+import '../../../../../data/repositires/auth/data_base_repo.dart';
 import '../../../../../domain/models/owner_model.dart';
+import '../../../ui/sharedWidgets/success_widget.dart';
 import '../widgets/register_connector.dart';
 
 class RegisterViewModel extends BaseViewModel<RegisterConnector> {
+  final AuthRepository _authRepository = AuthRepository();
+  final DatabaseRepository _databaseRepository = DatabaseRepository();
+
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+  bool _isExpanded = false;
+  int _selectIndex = -1;
+  String _selectCompound = '';
+
+  bool get isExpanded => _isExpanded;
+
+  String get selectCompound => _selectCompound;
+
+  int get selectIndex => _selectIndex;
+
+  changeRule(String value) {
+    _selectCompound = value;
+    notifyListeners();
+  }
+
+  changeIndex(int index) {
+    _selectIndex = index;
+    notifyListeners();
+  }
+
+  changeExpanded() {
+    _isExpanded = !_isExpanded;
+    notifyListeners();
+  }
+
   createUser({
-    required String email,
-    required String password,
-    required String name,
-    required String address,
+    required TextEditingController email,
+    required TextEditingController password,
+    required TextEditingController name,
+    required TextEditingController address,
     required BuildContext context,
   }) async {
+    _isLoading = true;
+    notifyListeners();
     bool isEmpty = is_empty(
-        name: name, password: password, email: email, address: address);
+      compoundName: _selectCompound,
+      name: name.text,
+      password: password.text,
+      email: email.text,
+      address: address.text,
+    );
 
     if (isEmpty) {
+      _isLoading = false;
+      notifyListeners();
       return connector!.onError("All fields must be not empty");
-    } else {
-      try {
-        final credential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: email.trim(), password: password.trim());
-        if (credential.user?.uid != null) {
-          credential.user!.sendEmailVerification();
-          upload_user_to_database(
-              isValid: false,
-              documentName: credential.user!.uid.toString(),
-              email: email,
-              name: name,
-              address: address,
-              id: credential.user!.uid.toString());
-          connector!.navigateToLogin();
-        }
-      } on FirebaseAuthException catch (e) {
-        connector!.onError(
-          e.message.toString(),
+    }
+    try {
+      final user = await _authRepository.registerUser(
+        email: email.text,
+        password: password.text,
+      );
+      if (user != null) {
+        await _databaseRepository.uploadUserToDatabase(
+          OwnerModel(
+              id: user.uid,
+              compoundName: _selectCompound,
+              address: address.text,
+              name: name.text,
+              email: email.text,
+              isValid: false),
         );
-      } catch (e) {
-        print('$e');
+        await _authRepository.sendEmailVerification(user);
+
+        _isLoading = false;
+        notifyListeners();
+        password.clear();
+        email.clear();
+        address.clear();
+        name.clear();
+        changeIndex(-1);
+        notifyListeners();
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return success_widget(
+                successMessage: "Account created successfully!",
+                onNavigate: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  connector!.navigateToLogin(); // Navigate to login screen
+                },
+                context: context,
+              );
+            });
       }
+    } on Exception catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      connector!.onError(e.toString());
     }
   }
 
@@ -50,27 +111,16 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
     required String password,
     required String name,
     required String address,
+    required String compoundName,
   }) {
-    if (email.isEmpty || name.isEmpty || password.isEmpty || address.isEmpty) {
+    if (email.isEmpty ||
+        name.isEmpty ||
+        compoundName.isEmpty ||
+        password.isEmpty ||
+        address.isEmpty) {
       return true;
     } else {
       return false;
     }
-  }
-
-  upload_user_to_database({
-    required String email,
-    required String name,
-    required String address,
-    required String id,
-    required bool isValid,
-    required String documentName,
-  }) async {
-    OwnerModel owner = OwnerModel(
-        id: id, address: address, name: name, email: email, isValid: isValid);
-    await FirebaseFirestore.instance
-        .collection('Owners')
-        .doc(id)
-        .set(owner.toJson());
   }
 }

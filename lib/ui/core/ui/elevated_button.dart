@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/constants.dart';
 
-Widget elevated_button({required Function onPressed}) => Align(
+Widget elevated_button({
+  required Function onPressed,
+  required String buttonName,
+  bool? loading,
+}) =>
+    Align(
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -11,18 +16,22 @@ Widget elevated_button({required Function onPressed}) => Align(
           backgroundColor: AppColors.primary,
           elevation: 10,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         ),
         onPressed: () async {
           onPressed();
         },
-        child: Text(
-          "Login",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: Constants.screenWidth / 15,
-            fontFamily: 'Nexa Bold 650',
-          ),
-        ),
+        child: loading == true
+            ? CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : Text(
+                buttonName,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: Constants.screenWidth / 18,
+                  fontFamily: 'Nexa Bold 650',
+                ),
+              ),
       ),
     );

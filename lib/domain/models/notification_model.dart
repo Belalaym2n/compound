@@ -1,88 +1,46 @@
-import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class NotificationModel {
-  String? image;
-  String tittle;
-  String description;
+  final String id;
+  final String title;
+  final String description;
+  final String? imageUrl;
+  final String? time; // Add a field for time (nullable)
+  final String? date; // Add a field for time (nullable)
 
   NotificationModel({
-    this.image,
-    required this.tittle,
+    required this.id,
+    required this.time,
+    required this.date,
+    required this.title,
     required this.description,
+    this.imageUrl,
   });
 
-  Map<String, dynamic> toJson() => {
-        'tittle': tittle,
-        'image': image,
-        'description': description,
-      };
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    final int? dataTime = json['send_after'];
 
-  NotificationModel.fromJson(Map<String, dynamic> json)
-      : this(
-          tittle: json['tittle'] as String,
-          image: json['image'] as String,
-          description: json['description'] as String,
-        );
-}
+    final DateTime dateTime = dataTime != null
+        ? DateTime.fromMillisecondsSinceEpoch(dataTime * 1000)
+        : DateTime.now(); // fallback to current time if timestamp is null
 
-class NotificationService {
-  static Future<void> saveNotifications(
-      List<NotificationModel> newNotifications) async {
-    final prefs = await SharedPreferences.getInstance();
+    final String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
 
-    // Retrieve existing notifications
-    String? existingJsonString = prefs.getString('notifications');
-    List<NotificationModel> existingNotifications = [];
-
-    // Decode existing notifications if available
-    if (existingJsonString != null) {
-      try {
-        List<dynamic> existingJsonList = jsonDecode(existingJsonString);
-        existingNotifications = existingJsonList
-            .map((jsonItem) => NotificationModel.fromJson(jsonItem))
-            .toList();
-      } catch (e) {
-        print('Error decoding existing JSON: $e');
-      }
-    }
-
-    // Combine existing notifications with new notifications
-    existingNotifications.addAll(newNotifications);
-
-    // Convert the combined list to JSON
-    List<Map<String, dynamic>> jsonList = existingNotifications
-        .map((notification) => notification.toJson())
-        .toList();
-    String updatedJsonString = jsonEncode(jsonList);
-
-    // Save the updated JSON string to SharedPreferences
-    await prefs.setString('notifications', updatedJsonString);
+    String? imageUrl = json['big_picture'] ?? json['imageUrl'];
+    print(imageUrl);
+    return NotificationModel(
+      id: json['id'] ?? '',
+      title: json['headings']?['en'] ?? '',
+      description: json['contents']?['en'] ?? '',
+      imageUrl: imageUrl,
+      date: dateTime.toString(),
+      time: formattedDate, // Use t she parsed time or a default value
+    );
   }
 
-  static Future<List<NotificationModel>> getNotifications() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Retrieve the JSON string from SharedPreferences
-    String? jsonString = prefs.getString('notifications');
-
-    if (jsonString == null) {
-      return []; // Return an empty list if no data is found
-    }
-
-    try {
-      // Convert the JSON string to a list of maps
-      List<dynamic> jsonList = jsonDecode(jsonString);
-
-      // Convert the list of maps to a list of NotificationModel
-      return jsonList
-          .map((jsonItem) => NotificationModel.fromJson(jsonItem))
-          .toList();
-    } catch (e) {
-      // Handle JSON decode error
-      print('Error decoding JSON: $e');
-      return [];
-    }
+  @override
+  String toString() {
+    return 'NotificationModel(id: $id, title: $title, description: $description, imageUrl: $imageUrl, time: $time)';
   }
 }

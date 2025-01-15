@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _positionAnimation;
   late Animation<double> _opacityAnimation;
   late Animation<double> _textOpacityAnimation;
-
   bool showFinalScreen = false;
 
   @override
@@ -92,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     Constants.initSize(context);
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           // الشعار المتحرك في الشاشة الثانية
@@ -102,18 +101,19 @@ class _SplashScreenState extends State<SplashScreen>
               builder: (context, child) {
                 return Positioned(
                   bottom: _positionAnimation.value,
-                  left: MediaQuery.of(context).size.width / 2 - 75,
+                  left: MediaQuery.of(context).size.width / 2.3 - 75,
                   child: FadeTransition(
                     opacity: _opacityAnimation,
                     child: Container(
-                      width: Constants.screenWidth * 0.38,
-                      height: Constants.screenHeight * 0.17,
+                      width: Constants.screenWidth * 0.5,
+                      height: Constants.screenHeight * 0.2,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           image: AssetImage(
-                            'assets/images/white.png', // ضع مسار الصورة هنا
+                            'assets/images/MAS-Logo.png', // ضع مسار الصورة هنا
                           ),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -128,12 +128,12 @@ class _SplashScreenState extends State<SplashScreen>
               child: FadeTransition(
                 opacity: _textOpacityAnimation,
                 child: Padding(
-                  padding: EdgeInsets.only(top: Constants.screenHeight * 0.23),
+                  padding: EdgeInsets.only(top: Constants.screenHeight * 0.18),
                   child: Text(
                     "خدمتك بسهوله", // النص الذي تريد عرضه
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Constants.screenWidth * 0.062,
+                      color: AppColors.primary,
+                      fontSize: Constants.screenWidth * 0.082,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
