@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../../../domain/models/notification_order.dart';
+import 'package:qr_code/domain/models/order_data.dart';
+
 import '../widgets/order_connector.dart';
 
 class ViewModelNotificationOrder extends ChangeNotifier {
@@ -8,7 +9,7 @@ class ViewModelNotificationOrder extends ChangeNotifier {
   bool isDone = false;
 
   show_orders(DateTime selectedDate) {
-    return StreamBuilder<List<NotificationOrder>>(
+    return StreamBuilder<List<OrderData>>(
       stream: get_orders(externalId: "service", dateTime: selectedDate),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -28,18 +29,18 @@ class ViewModelNotificationOrder extends ChangeNotifier {
           itemBuilder: (context, index) {
             final order = orders[index];
             return connector.showOrders(
-                id: order.id,
-                isDone: order.isRead,
+                id: order.id ?? '',
+                isDone: false,
                 onTap: () {},
-                heading: order.heading,
-                content: order.order);
+                heading: " order.service",
+                content: "order.service");
           },
         );
       },
     );
   }
 
-  Stream<List<NotificationOrder>> get_orders({
+  Stream<List<OrderData>> get_orders({
     required String externalId,
     required DateTime dateTime,
   }) {
@@ -52,7 +53,7 @@ class ViewModelNotificationOrder extends ChangeNotifier {
         .snapshots()
         .map((orders) {
       return orders.docs.map((order) {
-        return NotificationOrder.fromMap(order.data());
+        return OrderData.fromJson(order.data());
       }).toList();
     });
   }

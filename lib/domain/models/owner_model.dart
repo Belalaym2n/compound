@@ -4,13 +4,14 @@ class OwnerModel {
   String email;
   String id;
   String role;
-
+  String compoundName;
   String address;
   bool isValid;
 
   OwnerModel(
       {required this.name,
       required this.email,
+      required this.compoundName,
       required this.isValid,
       required this.address,
       required this.id,
@@ -20,6 +21,7 @@ class OwnerModel {
     return {
       "name": name,
       "email": email,
+      "compoundName": compoundName,
       "isValid": isValid,
       "role": role,
       "address": address,
@@ -31,6 +33,7 @@ class OwnerModel {
     OwnerModel owner = OwnerModel(
         name: json['name'],
         email: json['email'],
+        compoundName: json['compoundName'],
         isValid: json['isValid'],
         address: json['address'],
         id: json['id']);

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:qr_code/ui/core/add_users_validated/widgets/add_users_validated.dart';
 
 import '../../../ui/core/Home_page/widgets/home_page.dart';
-import '../../../ui/core/get_all_forRent/widgets/get_all_for_rent.dart';
-import '../../../ui/core/get_all_orders/all_orders.dart';
-import '../../../ui/core/notification_screen/getAllNotifcation.dart';
+import '../../../ui/core/get_all_orders/widget/all_orders_screen.dart';
+import '../../../ui/core/notification_screen/widgets/notification_screen.dart';
 
 class BottomeNavViewModel extends ChangeNotifier {
   int _selectedIndex = 0;
@@ -17,10 +17,8 @@ class BottomeNavViewModel extends ChangeNotifier {
 
   List<Widget> pages = [
     const HomePage(),
-
-    // CustomerServicesScreen(),
-    const GetAllAdv(),
-    OrderScreen(),
-    GetAllNotifications(),
+    NotificationScreen(),
+    const AllOrdersScreen(),
+    AddUsersValidated(),
   ];
 }

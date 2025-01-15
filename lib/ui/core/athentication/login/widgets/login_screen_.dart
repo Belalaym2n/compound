@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code/ui/core/athentication/login/view_model/view_model_login.dart';
 import 'package:qr_code/ui/core/athentication/login/widgets/login_connector.dart';
 import 'package:qr_code/ui/core/athentication/login/widgets/login_item.dart';
@@ -32,16 +33,23 @@ class _LoginScreenState extends BaseView<ViewModelLogin, LoginScreen>
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    return LoginItem(
-        passwordController: passwordController,
-        login_button: elevated_button(onPressed: () {
-          viewModel.login(
-              emailController: emailController.text.trim(),
-              passwordController: passwordController.text.trim(),
-              context: context);
-        }),
-        register_text: registerText(),
-        emailController: emailController);
+    return ChangeNotifierProvider(
+        create: (context) => viewModel,
+        builder: (context, child) => Consumer<ViewModelLogin>(
+              builder: (context, viewModel, child) => LoginItem(
+                  passwordController: passwordController,
+                  login_button: elevated_button(
+                      loading: viewModel.isLoading,
+                      buttonName: 'Login',
+                      onPressed: () {
+                        viewModel.login(
+                            emailController: emailController.text.trim(),
+                            passwordController: passwordController.text.trim(),
+                            context: context);
+                      }),
+                  register_text: registerText(),
+                  emailController: emailController),
+            ));
   }
 
   @override

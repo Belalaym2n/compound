@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:qr_code/ui/core/qr_code/scanQrCode/scanQrCode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../data/services/shared_pref_helper.dart';
 import '../../../../../screens/bottom/bottom_navigation/bottomNavigation.dart';
 import '../../../../../screens/onBoard/onBaoar.dart';
-import '../../../scanQrCode/scanQrCode.dart';
 
 class AutoLogin extends StatefulWidget {
   const AutoLogin({super.key});
@@ -15,23 +16,24 @@ class AutoLogin extends StatefulWidget {
 class _AutoLoginState extends State<AutoLogin> {
   late SharedPreferences sharedPreferences;
 
-  bool isLogin = false;
+  bool isUser = false;
   bool isAdmin = false;
   bool isSecurity = false;
 
   checkUserLogin() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getString("name") != null) {
+    print(isUser);
+    if (SharedPreferencesHelper.getData("user") == true) {
       setState(() {
-        isLogin = true;
+        print(isUser);
+        isUser = true;
       });
     }
-    if (sharedPreferences.getBool('isAdmin') == true) {
+    if (SharedPreferencesHelper.getData("admin") == true) {
       setState(() {
         isAdmin = true;
       });
     }
-    if (sharedPreferences.getBool('is security') == true) {
+    if (SharedPreferencesHelper.getData("security") == true) {
       setState(() {
         isSecurity = true;
       });
@@ -49,7 +51,7 @@ class _AutoLoginState extends State<AutoLogin> {
   Widget build(BuildContext context) {
     return isAdmin
         ? Container()
-        : isLogin
+        : isUser
             ? const BottomNav()
             : isSecurity
                 ? QRScanPage()
