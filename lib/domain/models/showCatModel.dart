@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code/ui/core/request_order/car_wash/widget/car_screen.dart';
 
-import '../../ui/core/qr_code/generateQRCode/creatQrCode.dart';
-import '../../ui/core/request_order/best_controller/widget/best_controller_item.dart';
-import '../../ui/core/request_order/home_service/widgets/request_order_screen.dart';
-import '../../ui/core/request_order/laundry/widgets/laundry_screen.dart';
+import '../../ui/core/user/Orders/best_controller/view/best_controller_screen.dart';
+import '../../ui/core/user/Orders/home_service_or_land_scape/view/home_service_or_land_scape.dart';
+import '../../ui/core/user/Orders/laundry/view/laundry_screen.dart';
+import '../../ui/core/user/booking/car_wash/view/car_screen.dart';
+import '../../ui/core/user/generateQRCode/view/creatQrCode.dart';
 
 class ShowCatModel {
   String text;
@@ -19,13 +19,6 @@ class ShowCatModel {
     required this.function,
     required this.colorBackground,
   });
-
-  List<String> texts = [
-    'Sky View',
-    'Golden Hour',
-    'Ocean Breeze',
-    'Green Escape',
-  ];
 
   static getData(BuildContext context) {
     List<ShowCatModel> data = [
@@ -64,7 +57,7 @@ class ShowCatModel {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RequestOrderScreen(
+                  builder: (context) => HomeServiceOrLandScape(
                     serviceName: 'Land Scape',
                   ),
                 ));
@@ -88,7 +81,7 @@ class ShowCatModel {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RequestOrderScreen(
+                  builder: (context) => HomeServiceOrLandScape(
                     serviceName: 'Home Service',
                   ),
                 ));

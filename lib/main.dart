@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:qr_code/ui/core/notification_screen/widgets/notification_detailed.dart';
+import 'package:qr_code/config/routes.dart';
+import 'package:qr_code/ui/core/user/notification_screen/widgets/notification_detailed.dart';
 import 'package:qr_code/utils/constants.dart';
-import 'package:qr_code/utils/routes.dart';
 import 'package:qr_code/utils/shared_pref.dart';
 
 import 'data/services/shared_pref_helper.dart';
@@ -29,7 +29,12 @@ void main() async {
   );
   await SharedPreferencesHelper.init();
   print("object${SharedPreferencesHelper.compoundName}");
-
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => MyApp(), // Wrap your app
+  //   ),
+  // );
   runApp(
     const MyApp(),
   );
@@ -51,7 +56,6 @@ class MyApp extends StatelessWidget {
           time: DateTime.now().toString(),
           description: notification.body.toString(),
           id: notification.notificationId,
-          // timestamp: DateTime.now(),
           title: notification.title.toString(),
           imageUrl: notification.bigPicture.toString());
 

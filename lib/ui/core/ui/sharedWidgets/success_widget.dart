@@ -66,21 +66,42 @@ Widget success_widget({
 }
 
 Widget done_order_widget(BuildContext context) {
-  return SingleChildScrollView(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+  return SafeArea(
+    child: SingleChildScrollView(
+        child: Stack(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height / 1.3,
             child: LottieBuilder.asset(
               "assets/json_animation/done.json",
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 3,
             )),
+        Column(
+          children: [
+            SizedBox(
+              height: Constants.screenHeight * 0.48,
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(Constants.screenWidth * 0.04),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "Your request has been successfully executed,\n we will contact you within half an hour",
+                  style: TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: Constants.screenWidth * 0.04),
+                ),
+              ),
+            ),
+          ],
+        )
       ],
-    ),
+    )),
   );
 }
