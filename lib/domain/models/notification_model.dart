@@ -27,7 +27,7 @@ class NotificationModel {
     final String formattedDate =
         DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
 
-    String? imageUrl = json['big_picture'] ?? json['imageUrl'];
+    String? imageUrl = json['global_image'] ?? json['imageUrl'];
     print(imageUrl);
     return NotificationModel(
       id: json['id'] ?? '',

@@ -15,10 +15,12 @@ class OrderData implements IDOrderModel {
   bool? isRead;
   String? employeeName;
   String? date;
+  String? price;
 
   OrderData({
     this.area,
     this.time,
+    this.price,
     this.date,
     this.employeeName,
     required this.email,
@@ -30,12 +32,13 @@ class OrderData implements IDOrderModel {
     this.problem,
     this.note,
     required this.service,
-    this.isRead,
+    this.isRead = false,
   });
 
   factory OrderData.fromJson(Map<String, dynamic> json) {
     return OrderData(
       area: json['area'] as String?,
+      price: json['price'] as String?,
       time: json['time'] as String?,
       date: json['date'] as String?,
       employeeName: json['employeeName'] as String?,
@@ -57,6 +60,7 @@ class OrderData implements IDOrderModel {
     final Map<String, dynamic> data = {};
     if (area != null) data['area'] = area;
     if (time != null) data['time'] = time;
+    if (time != null) data['price'] = price;
     if (date != null) data['date'] = date;
     if (employeeName != null) data['employeeName'] = employeeName;
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
@@ -69,7 +73,7 @@ class OrderData implements IDOrderModel {
       data['compoundName'] = compoundName;
     if (note != null) data['note'] = note;
     if (service != null) data['service'] = service;
-    if (isRead != null) data['isRead'] = isRead;
+    data['isRead'] = isRead;
     return data;
   }
 

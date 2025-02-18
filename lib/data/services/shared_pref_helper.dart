@@ -4,10 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesHelper {
   static SharedPreferences? _preferences;
   static String? compoundName; // المتغير الجلوبال
+  static String? email; // المتغير الجلوبال
+  static String? name; // المتغير الجلوبال
+  static String? phone; // المتغير الجلوبال
+  static String? address; // المتغير الجلوبال
 
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
     compoundName = _preferences?.getString("compoundName");
+    email = _preferences?.getString("email");
+    address = _preferences?.getString("userAddressFromFirebase");
+    phone = _preferences?.getString("userPhoneFromFirebase");
+    name = _preferences?.getString("name");
   }
 
   static Future<bool> saveData({
@@ -27,18 +35,21 @@ class SharedPreferencesHelper {
     }
   }
 
-  static void loadCachedPhone_and_address({
+  static void loadUserDataForOrders({
     required TextEditingController phoneController,
-    required TextEditingController addressController,
+    TextEditingController? addressController,
     TextEditingController? areaController,
+    TextEditingController? nameController,
   }) async {
     final phone = await SharedPreferencesHelper.getData("phone");
     final address = await SharedPreferencesHelper.getData("address");
     final area = await SharedPreferencesHelper.getData("area");
+    final name = await SharedPreferencesHelper.getData("name");
 
     if (phone != null) phoneController.text = phone;
-    if (address != null) addressController.text = address;
+    if (address != null) addressController?.text = address;
     if (area != null) areaController?.text = area;
+    if (name != null) nameController?.text = name;
 
     print("Cached Data Loaded: Phone: $phone, Address: $address");
   }

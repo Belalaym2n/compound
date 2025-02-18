@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:209383179475:android:9e94803c8857515e88c026",
+        "android_client_info": {
+          "package_name": "com.example.masFMTheBestInEgypt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXuFbbuynadWb-Ofsy6ARMKOJRRUbt_lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:209383179475:android:3af3d7ea167a346f88c026",
         "android_client_info": {
           "package_name": "com.example.qr_code"

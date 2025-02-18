@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/utils/base.dart';
 
-import '../../../../../data/repositires/auth/creat_account.dart';
-import '../../../../../data/repositires/auth/data_base_repo.dart';
+import '../../../../../data/repositires/firebaseAuth/creat_account.dart';
+import '../../../../../data/repositires/firebaseDatabseReo/uploadOwnrRepo.dart';
 import '../../../../../domain/models/owner_model.dart';
 import '../../../ui/sharedWidgets/success_widget.dart';
-import '../widgets/register_connector.dart';
+import '../connector/register_connector.dart';
 
 class RegisterViewModel extends BaseViewModel<RegisterConnector> {
-  final AuthRepository _authRepository = AuthRepository();
-  final DatabaseRepository _databaseRepository = DatabaseRepository();
+  FirebaseRegisterRepository registerRepository;
+
+  OwnersAuthDatabaseRepository databaseRepository;
+
+  RegisterViewModel(this.registerRepository, this.databaseRepository);
 
   bool _isLoading = false;
+  bool _obsureText = true;
 
   bool get isLoading => _isLoading;
+
+  bool get obsureText => _obsureText;
   bool _isExpanded = false;
   int _selectIndex = -1;
   String _selectCompound = '';
@@ -24,18 +30,28 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
 
   int get selectIndex => _selectIndex;
 
-  changeRule(String value) {
+  changeCompoundName(String value) {
     _selectCompound = value;
     notifyListeners();
   }
 
-  changeIndex(int index) {
+  changeCompoundIndex(int index) {
     _selectIndex = index;
     notifyListeners();
   }
 
   changeExpanded() {
     _isExpanded = !_isExpanded;
+    notifyListeners();
+  }
+
+  changeObsureText() {
+    _obsureText = !_obsureText;
+    notifyListeners();
+  }
+
+  void _setLoadingState(bool isLoading) {
+    _isLoading = isLoading;
     notifyListeners();
   }
 
@@ -46,8 +62,7 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
     required TextEditingController address,
     required BuildContext context,
   }) async {
-    _isLoading = true;
-    notifyListeners();
+    _setLoadingState(true);
     bool isEmpty = is_empty(
       compoundName: _selectCompound,
       name: name.text,
@@ -57,17 +72,17 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
     );
 
     if (isEmpty) {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingState(false);
       return connector!.onError("All fields must be not empty");
     }
     try {
-      final user = await _authRepository.registerUser(
+      final user = await registerRepository.registerUser(
         email: email.text,
         password: password.text,
       );
       if (user != null) {
-        await _databaseRepository.uploadUserToDatabase(
+        await registerRepository.sendEmailVerification(user);
+        await databaseRepository.uploadUserToDatabase(
           OwnerModel(
               id: user.uid,
               compoundName: _selectCompound,
@@ -76,15 +91,13 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
               email: email.text,
               isValid: false),
         );
-        await _authRepository.sendEmailVerification(user);
 
-        _isLoading = false;
-        notifyListeners();
+        _setLoadingState(false);
         password.clear();
         email.clear();
         address.clear();
         name.clear();
-        changeIndex(-1);
+        changeCompoundIndex(-1);
         notifyListeners();
         showDialog(
             context: context,
@@ -100,8 +113,7 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
             });
       }
     } on Exception catch (e) {
-      _isLoading = false;
-      notifyListeners();
+      _setLoadingState(false);
       connector!.onError(e.toString());
     }
   }
@@ -113,11 +125,11 @@ class RegisterViewModel extends BaseViewModel<RegisterConnector> {
     required String address,
     required String compoundName,
   }) {
-    if (email.isEmpty ||
-        name.isEmpty ||
-        compoundName.isEmpty ||
-        password.isEmpty ||
-        address.isEmpty) {
+    if (email.trim().isEmpty ||
+        name.trim().isEmpty ||
+        compoundName.trim().isEmpty ||
+        password.trim().isEmpty ||
+        address.trim().isEmpty) {
       return true;
     } else {
       return false;

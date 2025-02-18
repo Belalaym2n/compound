@@ -23,6 +23,7 @@
 
     <application
 
+
         android:label="MAS FM"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

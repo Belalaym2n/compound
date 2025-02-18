@@ -1,5 +1,5 @@
 import '../../../domain/models/notification_model.dart';
-import '../../services/notifcation/getNotifiation.dart';
+import '../../services/notifcation/getNotifiationService.dart';
 
 class NotificationRepository {
   final GetNotificationService _service;
@@ -8,10 +8,9 @@ class NotificationRepository {
 
   Future<List<NotificationModel>> fetchNotifications() async {
     try {
-      final notifications = await _service.fetchNotifications();
-      return notifications;
-    } catch (e) {
-      throw Exception('Error in NotificationRepository: $e');
+      return await _service.fetchNotifications();
+    } catch (error) {
+      throw Exception('Error in NotificationRepository: ${error.toString()}');
     }
   }
 }
