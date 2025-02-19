@@ -7,6 +7,7 @@ import 'package:qr_code/ui/core/user/addProblem/viewModel/addProblemViewModel.da
 import 'package:qr_code/ui/core/user/addProblem/widget/addProblemItem.dart';
 import 'package:qr_code/utils/base.dart';
 
+import '../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../../ui/sharedWidgets/error_widget.dart';
 
 class AddProblemScreen extends StatefulWidget {
@@ -33,13 +34,15 @@ class _AddProblemScreenState
     return ChangeNotifierProvider(
         create: (context) => viewModel,
         child: Consumer<AddProblemViewModel>(
-            builder: (context, viewModel, child) => AddProblemItem(
-                isLoading: viewModel.isLoading,
-                isDone: viewModel.isDone,
-                problemController: problemController,
-                submitProblem: () {
-                  viewModel.uploadProblem(problemController: problemController);
-                })));
+            builder: (context, viewModel, child) => InternetWrapper(
+                child: AddProblemItem(
+                    isLoading: viewModel.isLoading,
+                    isDone: viewModel.isDone,
+                    problemController: problemController,
+                    submitProblem: () {
+                      viewModel.uploadProblem(
+                          problemController: problemController);
+                    }))));
   }
 
   @override

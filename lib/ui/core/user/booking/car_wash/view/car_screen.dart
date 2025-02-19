@@ -8,6 +8,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../../../../../data/services/shared_pref_helper.dart';
 import '../../../../../../utils/constants.dart';
+import '../../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../../../ui/sharedWidgets/shared_widgets.dart';
 import '../connector/car_wash_connector.dart';
 import '../view_model/car_wash_view_model.dart';
@@ -53,8 +54,8 @@ class _CarScreenState extends BaseView<CarWashViewModel, CarScreen>
               centerTitle: true,
             ),
             body: Consumer<CarWashViewModel>(
-                builder: (context, value, child) =>
-                    viewModel.orderIsDone == true
+                builder: (context, value, child) => InternetWrapper(
+                    child: viewModel.orderIsDone == true
                         ? BookingDaysDonwload(
                             screenshotController: screenshotController,
                             saveImage: () {
@@ -81,7 +82,7 @@ class _CarScreenState extends BaseView<CarWashViewModel, CarScreen>
                             },
                             steps: viewModel.steps,
                             currentStep: viewModel.index,
-                          ))));
+                          )))));
   }
 
   @override

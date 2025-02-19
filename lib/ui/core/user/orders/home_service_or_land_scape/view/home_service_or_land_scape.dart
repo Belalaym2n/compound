@@ -6,6 +6,7 @@ import 'package:qr_code/utils/app_colors.dart';
 import 'package:qr_code/utils/constants.dart';
 
 import '../../../../../../data/repositires/request_order/request_order_data_base_repo.dart';
+import '../../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../checkoutOption/checkOutOption.dart';
 import '../connector/connector.dart';
 import '../view_model/request_order_view_model.dart';
@@ -48,31 +49,31 @@ class _RequestOrderScreenState extends State<HomeServiceOrLandScape>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => viewModel,
-      child: Scaffold(
-        backgroundColor: Color(0xFFF5F5F5),
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.primary,
+        create: (context) => viewModel,
+        child: Scaffold(
+          backgroundColor: Color(0xFFF5F5F5),
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.primary,
+              ),
             ),
+            toolbarHeight: Constants.screenHeight * 0.046,
+            backgroundColor: Colors.white,
+            title: Text("Place Order",
+                style: TextStyle(
+                    fontSize: Constants.screenWidth * 0.05,
+                    fontWeight: FontWeight.w600)),
+            centerTitle: true,
+            elevation: 0,
           ),
-          toolbarHeight: Constants.screenHeight * 0.046,
-          backgroundColor: Colors.white,
-          title: Text("Place Order",
-              style: TextStyle(
-                  fontSize: Constants.screenWidth * 0.05,
-                  fontWeight: FontWeight.w600)),
-          centerTitle: true,
-          elevation: 0,
-        ),
-        body: Consumer<RequestOrderViewModel>(
-            builder: (context, viewModel, child) =>
-                viewModel.orderIsDone == true
+          body: Consumer<RequestOrderViewModel>(
+            builder: (context, viewModel, child) => InternetWrapper(
+                child: viewModel.orderIsDone == true
                     ? done_order_widget(context)
                     : Stepper(
                         currentStep: viewModel.index,
@@ -90,8 +91,8 @@ class _RequestOrderScreenState extends State<HomeServiceOrLandScape>
                         // onStepCancel: viewModel.onStepCancel,
                         steps: viewModel.steps,
                       )),
-      ),
-    );
+          ),
+        ));
   }
 
   @override

@@ -10,6 +10,7 @@ import 'package:qr_code/utils/base.dart';
 
 import '../../../../../../data/services/shared_pref_helper.dart';
 import '../../../../../../utils/constants.dart';
+import '../../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../../../ui/sharedWidgets/success_widget.dart';
 import '../../checkoutOption/checkOutOption.dart';
 import '../connector/best_controller_connector.dart';
@@ -49,36 +50,42 @@ class _BestControllerScreenState
     return ChangeNotifierProvider(
         create: (context) => viewModel,
         child: Consumer<BestControllerViewModel>(
-          builder: (context, viewModel, child) => Scaffold(
-              backgroundColor: Colors.white,
-              resizeToAvoidBottomInset: true,
-              appBar: AppBar(
-                title: servic_name(serviceName: "Best Controller"),
-                centerTitle: true,
-              ),
-              body: SingleChildScrollView(
-                  child: viewModel.orderIsDone == true
-                      ? done_order_widget(context)
-                      : Stepper(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          currentStep: viewModel.index,
+            builder: (context, viewModel, child) => Scaffold(
+                  backgroundColor: Colors.white,
+                  resizeToAvoidBottomInset: true,
+                  appBar: AppBar(
+                    title: servic_name(serviceName: "Best Controller"),
+                    centerTitle: true,
+                  ),
+                  body: InternetWrapper(
+                      child: SingleChildScrollView(
+                          child: viewModel.orderIsDone == true
+                              ? done_order_widget(context)
+                              : Stepper(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  currentStep: viewModel.index,
 
-                          controlsBuilder: (context, details) {
-                            return stepperButtonsWidget(
-                                isLoading: viewModel.isLoading,
-                                isDone: viewModel.index == 2,
-                                index: viewModel.index,
-                                onStepCancel: viewModel.onStepCancel,
-                                onStepContinue: () => viewModel.onStepContinue(
-                                    areaController: areaController,
-                                    addressController: addressController,
-                                    phoneNumberController: phoneController,
-                                    noteController: noteController));
-                          },
-                          // onStepCancel: viewModel.onStepCancel,
-                          steps: viewModel.steps,
-                        ))),
-        ));
+                                  controlsBuilder: (context, details) {
+                                    return stepperButtonsWidget(
+                                        isLoading: viewModel.isLoading,
+                                        isDone: viewModel.index == 2,
+                                        index: viewModel.index,
+                                        onStepCancel: viewModel.onStepCancel,
+                                        onStepContinue: () =>
+                                            viewModel.onStepContinue(
+                                                areaController: areaController,
+                                                addressController:
+                                                    addressController,
+                                                phoneNumberController:
+                                                    phoneController,
+                                                noteController:
+                                                    noteController));
+                                  },
+                                  // onStepCancel: viewModel.onStepCancel,
+                                  steps: viewModel.steps,
+                                ))),
+                )));
   }
 
   @override

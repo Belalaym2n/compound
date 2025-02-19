@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code/ui/core/ui/sharedWidgets/checkIneternet.dart';
 import 'package:qr_code/ui/core/ui/sharedWidgets/error_widget.dart';
 import 'package:qr_code/utils/base.dart';
 import 'package:qr_code/utils/constants.dart';
@@ -30,7 +31,7 @@ class _NotificationScreenState
     // TODO: implement initState
     super.initState();
     viewModel.connector = this;
-    viewModel.fetchNotifications();
+    viewModel.checkInternetAndFetch();
   }
 
   @override
@@ -38,34 +39,36 @@ class _NotificationScreenState
     return ChangeNotifierProvider(
         create: (context) => viewModel,
         builder: (context, child) => Consumer<NotificationViewModel>(
-            builder: (context, viewModel, child) => Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: servic_name(
-                      serviceName: "Notifications", textColor: Colors.white),
-                  elevation: 4,
-                  backgroundColor: AppColors.primary,
-                  leading:
-                      Icon(Icons.notifications_active, color: Colors.white),
-                ),
-                body: viewModel.isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : viewModel.notifications.isEmpty
-                        ? no_notification()
-                        : ListView.separated(
-                            itemCount: viewModel.notifications.length,
-                            separatorBuilder: (context, index) => Divider(
-                              thickness: 1.5,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                            itemBuilder: (context, index) {
-                              final notification =
-                                  viewModel.notifications[index];
-                              return NotificationItem(
-                                notificationModel: notification,
-                              );
-                            },
-                          ))));
+            builder: (context, viewModel, child) => InternetWrapper(
+                child: Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      title: servic_name(
+                          serviceName: "Notifications",
+                          textColor: Colors.white),
+                      elevation: 4,
+                      backgroundColor: AppColors.primary,
+                      leading:
+                          Icon(Icons.notifications_active, color: Colors.white),
+                    ),
+                    body: viewModel.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : viewModel.notifications.isEmpty
+                            ? no_notification()
+                            : ListView.separated(
+                                itemCount: viewModel.notifications.length,
+                                separatorBuilder: (context, index) => Divider(
+                                  thickness: 1.5,
+                                  color: Colors.grey.withOpacity(0.5),
+                                ),
+                                itemBuilder: (context, index) {
+                                  final notification =
+                                      viewModel.notifications[index];
+                                  return NotificationItem(
+                                    notificationModel: notification,
+                                  );
+                                },
+                              )))));
   }
 
   Widget no_notification() {

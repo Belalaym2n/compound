@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:qr_code/utils/base.dart';
 
 import '../../../../../data/repositires/notification/get_notification_repo.dart';
@@ -28,6 +29,19 @@ class NotificationViewModel extends BaseViewModel<NotificationConnector> {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> checkInternetAndFetch() async {
+    final List<ConnectivityResult> connectivityResults =
+        await Connectivity().checkConnectivity();
+    final bool connected =
+        connectivityResults.any((result) => result != ConnectivityResult.none);
+
+    if (connected) {
+      await fetchNotifications(); // ✅ Call API only if connected
+    } else {
+      print("❌ No Internet Connection");
     }
   }
 
