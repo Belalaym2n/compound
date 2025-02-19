@@ -14,6 +14,7 @@ import '../../../../../data/repositires/firebaseAuth/firebaseLoginRepo.dart';
 import '../../../../../data/repositires/firebaseAuth/reset_password.dart';
 import '../../../../../data/repositires/firebaseDatabseReo/getOwnersRepo.dart';
 import '../../../../../data/services/ownerFirebaseDatabaseService/getOwners.dart';
+import '../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../../ui/sharedWidgets/elevated_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -40,32 +41,32 @@ class _LoginScreenState extends BaseView<ViewModelLogin, LoginScreen>
     return ChangeNotifierProvider(
         create: (context) => viewModel,
         builder: (context, child) => Consumer<ViewModelLogin>(
-              builder: (context, viewModel, child) => LoginItem(
-                  isDoneResetPassword: viewModel.isDoneResetPassword,
-                  isLoading: viewModel.isLoading,
-                  emailControllerForResetPassword:
-                      emailControllerForResetPassword,
-                  resetPassword: () async {
-                    await viewModel.resetPassword(
-                        context: context,
-                        email: emailControllerForResetPassword.text);
-                    emailController.clear();
-                  },
-                  obsureText: viewModel.obsureText,
-                  changeObureText: viewModel.changeObsureText,
-                  passwordController: passwordController,
-                  login_button: elevated_button(
-                      loading: viewModel.isLoading,
-                      buttonName: 'Login',
-                      onPressed: () {
-                        viewModel.login(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                            context: context);
-                      }),
-                  register_text: registerText(),
-                  emailController: emailController),
-            ));
+            builder: (context, viewModel, child) => InternetWrapper(
+                child: LoginItem(
+                    isDoneResetPassword: viewModel.isDoneResetPassword,
+                    isLoading: viewModel.isLoading,
+                    emailControllerForResetPassword:
+                        emailControllerForResetPassword,
+                    resetPassword: () async {
+                      await viewModel.resetPassword(
+                          context: context,
+                          email: emailControllerForResetPassword.text);
+                      emailController.clear();
+                    },
+                    obsureText: viewModel.obsureText,
+                    changeObureText: viewModel.changeObsureText,
+                    passwordController: passwordController,
+                    login_button: elevated_button(
+                        loading: viewModel.isLoading,
+                        buttonName: 'Login',
+                        onPressed: () {
+                          viewModel.login(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                              context: context);
+                        }),
+                    register_text: registerText(),
+                    emailController: emailController))));
   }
 
   @override

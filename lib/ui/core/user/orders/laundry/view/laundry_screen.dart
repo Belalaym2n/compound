@@ -8,6 +8,7 @@ import 'package:qr_code/utils/base.dart';
 
 import '../../../../../../data/services/shared_pref_helper.dart';
 import '../../../../../../domain/models/order_data.dart';
+import '../../../../ui/sharedWidgets/checkIneternet.dart';
 import '../../../../ui/sharedWidgets/success_widget.dart';
 import '../laundry_view_model/laundry_view_model.dart';
 import '../widgets/laundry_item.dart';
@@ -36,32 +37,34 @@ class _LaundryScreenState extends BaseView<LaundryViewModel, LaundryScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => viewModel,
-      child: Consumer<LaundryViewModel>(
-        builder: (context, viewModel, child) => viewModel.isDone == true
-            ? Scaffold(body: done_order_widget(context))
-            : LaundryItem(
-                isLoading: viewModel.isLoading,
-                requestEmployee: () {
-                  OrderData laundryModel = OrderData(
-                      date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-                      compoundName:
-                          SharedPreferencesHelper.compoundName ?? 'not exist',
-                      email: SharedPreferencesHelper.email,
-                      service: 'Laundry',
-                      address: addressController.text,
-                      note: noteController.text,
-                      phoneNumber: phoneController.text,
-                      time: DateFormat('HH:mm').format(DateTime.now()),
-                      isPaid: 'un paid');
-                  viewModel.send_order_to_database(laundryModel: laundryModel);
-                },
-                addressController: addressController,
-                noteController: noteController,
-                phoneController: phoneController,
-              ),
-      ),
-    );
+        create: (context) => viewModel,
+        child: Consumer<LaundryViewModel>(
+          builder: (context, viewModel, child) => InternetWrapper(
+            child: viewModel.isDone == true
+                ? Scaffold(body: done_order_widget(context))
+                : LaundryItem(
+                    isLoading: viewModel.isLoading,
+                    requestEmployee: () {
+                      OrderData laundryModel = OrderData(
+                          date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                          compoundName: SharedPreferencesHelper.compoundName ??
+                              'not exist',
+                          email: SharedPreferencesHelper.email,
+                          service: 'Laundry',
+                          address: addressController.text,
+                          note: noteController.text,
+                          phoneNumber: phoneController.text,
+                          time: DateFormat('HH:mm').format(DateTime.now()),
+                          isPaid: 'un paid');
+                      viewModel.send_order_to_database(
+                          laundryModel: laundryModel);
+                    },
+                    addressController: addressController,
+                    noteController: noteController,
+                    phoneController: phoneController,
+                  ),
+          ),
+        ));
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:qr_code/utils/base.dart';
 
 import '../../../../../../utils/app_images.dart';
 import '../../../../../../utils/constants.dart';
+import '../../../../ui/sharedWidgets/checkIneternet.dart';
 import '../view_model/request_employee_view_model.dart';
 import '../widgets/addNoteAndeRequestOrder.dart';
 
@@ -46,16 +47,17 @@ class _RequestEmployeeScreenState
           ),
         ),
         body: ChangeNotifierProvider(
-          create: (context) => viewModel,
-          builder: (context, child) => Consumer<RequestEmployeeViewModel>(
-            builder: (context, viewModel, child) => Column(
-              children: [
-                showImage(),
-                chooseEmployee(),
-              ],
-            ),
-          ),
-        ));
+            create: (context) => viewModel,
+            builder: (context, child) => Consumer<RequestEmployeeViewModel>(
+                  builder: (context, viewModel, child) => InternetWrapper(
+                    child: Column(
+                      children: [
+                        showImage(),
+                        chooseEmployee(),
+                      ],
+                    ),
+                  ),
+                )));
   }
 
   Widget showImage() {
